@@ -76,7 +76,9 @@ The v0.1 registry is intentionally small:
 - **Figma MCP** — optional design/context source when the project uses Figma.
 - **Stitch** — experimental visual exploration source/provider.
 
-None is required for the core workflow. See `skills/design-pipeline/references/providers.json` for the reviewed compatibility metadata.
+None is required for the core workflow. See `skills/design-pipeline/references/providers.json` for the reviewed compatibility metadata and exact reviewed refs.
+
+Reviewed refs are compatibility snapshots, not bundled dependencies. Design Pipeline never auto-upgrades or auto-installs them.
 
 ## What v0.1 deliberately does not build
 
@@ -108,6 +110,28 @@ skills/design-pipeline/
 ```
 
 `SKILL.md` stays small and routes into the references only when needed. This follows the progressive-disclosure model used by Agent Skills.
+
+## Install
+
+The repository uses the standard Agent Skills layout. With the `skills` CLI:
+
+```bash
+npx skills add Nishef1/design-pipeline -s design-pipeline
+```
+
+Or copy `skills/design-pipeline/` into the skills directory supported by your agent harness.
+
+Installing Design Pipeline installs only this orchestration skill. Optional providers remain separate and require an explicit decision by the user/project.
+
+## Usage
+
+Invoke it explicitly when desired:
+
+```text
+Use $design-pipeline to redesign this surface.
+```
+
+It may also be discovered automatically by compatible harnesses for material UI/UX design, redesign, review, and rendered-verification tasks. Small local style changes should not require the full workflow.
 
 ## Status
 
