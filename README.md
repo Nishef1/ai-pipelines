@@ -98,6 +98,10 @@ Existing project tooling should be reused before introducing another system.
 ## Repository layout
 
 ```text
+README.md
+LICENSE
+evals/
+└── routing-cases.json
 skills/design-pipeline/
 ├── SKILL.md
 ├── agents/
@@ -110,6 +114,8 @@ skills/design-pipeline/
 ```
 
 `SKILL.md` stays small and routes into the references only when needed. This follows the progressive-disclosure model used by Agent Skills.
+
+`evals/routing-cases.json` is a non-aesthetic trigger corpus. It exists to catch under-triggering and over-triggering of the skill; it is **not** a CI gate on visual style and does not constrain redesign choices.
 
 ## Install
 
@@ -144,6 +150,8 @@ It may also be discovered automatically by compatible harnesses for material UI/
 5. a bilingual RTL/LTR interface.
 
 Each should be compared against the same agent without Design Pipeline across multiple independent runs. Success is multidimensional; a single aesthetic score is not sufficient.
+
+The initial routing corpus contains positive and negative examples for whether the full pipeline should activate. It is test data, not a design rulebook.
 
 ## Influences
 
