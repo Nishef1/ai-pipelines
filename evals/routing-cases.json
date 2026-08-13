@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "landing-greenfield",
+      "prompt": "Design a new landing page for a privacy-first analytics product. I want three distinct directions before we build.",
+      "expect_trigger": true,
+      "change_class": "greenfield",
+      "surface": "persuade"
+    },
+    {
+      "id": "landing-redesign",
+      "prompt": "Redesign our existing marketing homepage from scratch visually, but preserve the product claims and navigation.",
+      "expect_trigger": true,
+      "change_class": "new-world",
+      "surface": "persuade"
+    },
+    {
+      "id": "hero-material",
+      "prompt": "Our hero feels generic and forgettable. Rework the composition and art direction, then verify it in the browser.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "persuade"
+    },
+    {
+      "id": "portfolio",
+      "prompt": "Create a distinctive portfolio experience for a motion designer and avoid template-looking layouts.",
+      "expect_trigger": true,
+      "change_class": "greenfield",
+      "surface": "experience"
+    },
+    {
+      "id": "pricing-page",
+      "prompt": "Design a pricing page that helps B2B buyers compare plans without dark patterns.",
+      "expect_trigger": true,
+      "change_class": "new-surface",
+      "surface": "persuade"
+    },
+    {
+      "id": "dashboard-new",
+      "prompt": "Design a dense operations dashboard for warehouse supervisors with loading, empty, error, and permission-limited states.",
+      "expect_trigger": true,
+      "change_class": "new-surface",
+      "surface": "operate"
+    },
+    {
+      "id": "dashboard-redesign",
+      "prompt": "Redesign this admin dashboard so it is easier to scan at high density while keeping the existing brand.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "operate"
+    },
+    {
+      "id": "checkout",
+      "prompt": "Our checkout is confusing on mobile. Rework the information hierarchy and recovery states without changing payment rules.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "operate"
+    },
+    {
+      "id": "settings",
+      "prompt": "Design a new account settings surface with destructive actions, permission states, and clear recovery.",
+      "expect_trigger": true,
+      "change_class": "new-surface",
+      "surface": "operate"
+    },
+    {
+      "id": "docs",
+      "prompt": "Redesign the documentation reading experience and navigation for long technical guides.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "read"
+    },
+    {
+      "id": "rtl",
+      "prompt": "Redesign this bilingual Persian/English marketplace page and verify both RTL and LTR layouts at mobile and desktop widths.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "operate"
+    },
+    {
+      "id": "figma-handoff",
+      "prompt": "Implement this Figma page in the existing app, preserving our components and checking the real rendered result against the design.",
+      "expect_trigger": true,
+      "change_class": "new-surface",
+      "surface": "operate"
+    },
+    {
+      "id": "screenshot-redesign",
+      "prompt": "Use this screenshot only as visual inspiration and redesign our page without copying the other brand's identity.",
+      "expect_trigger": true,
+      "change_class": "new-world",
+      "surface": "persuade"
+    },
+    {
+      "id": "design-review",
+      "prompt": "Review this product page for UX, visual hierarchy, responsive behavior, and brand fidelity. Do not change code yet.",
+      "expect_trigger": true,
+      "change_class": "review",
+      "surface": "operate"
+    },
+    {
+      "id": "visual-polish",
+      "prompt": "Do a final visual and UX pass on this completed landing page using actual browser renders, not just source inspection.",
+      "expect_trigger": true,
+      "change_class": "review",
+      "surface": "persuade"
+    },
+    {
+      "id": "new-product-world",
+      "prompt": "We have product requirements but no visual identity yet. Establish a design direction and build the first page.",
+      "expect_trigger": true,
+      "change_class": "greenfield",
+      "surface": "persuade"
+    },
+    {
+      "id": "component-system",
+      "prompt": "Our UI components have drifted visually across the app. Audit the system and consolidate durable design decisions without locking future redesigns.",
+      "expect_trigger": true,
+      "change_class": "review",
+      "surface": "operate"
+    },
+    {
+      "id": "onboarding",
+      "prompt": "Design a first-run onboarding flow that gets users to their first successful project quickly and handles empty/error states.",
+      "expect_trigger": true,
+      "change_class": "new-surface",
+      "surface": "operate"
+    },
+    {
+      "id": "commerce-product",
+      "prompt": "Improve this marketplace product-detail page so buyers can compare compatibility, support, price and seller information without losing visual character.",
+      "expect_trigger": true,
+      "change_class": "refinement",
+      "surface": "operate"
+    },
+    {
+      "id": "reference-variants",
+      "prompt": "Explore materially different visual directions from these references, let me choose one, then implement and verify the winner.",
+      "expect_trigger": true,
+      "change_class": "new-world",
+      "surface": "persuade"
+    },
+    {
+      "id": "css-rename",
+      "prompt": "Rename this CSS class from .cardRow to .productRow without changing styles.",
+      "expect_trigger": false,
+      "reason": "mechanical local refactor"
+    },
+    {
+      "id": "padding-tweak",
+      "prompt": "Change the button padding from 12px to 16px.",
+      "expect_trigger": false,
+      "reason": "trivial local style edit"
+    },
+    {
+      "id": "color-known",
+      "prompt": "Use our existing danger token instead of the hardcoded red on this icon.",
+      "expect_trigger": false,
+      "reason": "known local token repair"
+    },
+    {
+      "id": "backend-go",
+      "prompt": "Fix this Go data race in the worker pool.",
+      "expect_trigger": false,
+      "reason": "backend-only"
+    },
+    {
+      "id": "postgres",
+      "prompt": "Add a unique PostgreSQL constraint for order idempotency.",
+      "expect_trigger": false,
+      "reason": "database-only"
+    },
+    {
+      "id": "api-auth",
+      "prompt": "Fix authorization on GET /orders/:id so users cannot read other users' orders.",
+      "expect_trigger": false,
+      "reason": "backend security task"
+    },
+    {
+      "id": "typo",
+      "prompt": "Fix the typo in the footer copy.",
+      "expect_trigger": false,
+      "reason": "trivial content edit"
+    },
+    {
+      "id": "single-alt",
+      "prompt": "Add missing alt text to this one image using the provided description.",
+      "expect_trigger": false,
+      "reason": "obvious isolated accessibility repair"
+    },
+    {
+      "id": "unit-test",
+      "prompt": "Write unit tests for this date formatting helper.",
+      "expect_trigger": false,
+      "reason": "non-UI implementation task"
+    },
+    {
+      "id": "dependency-update",
+      "prompt": "Update zod to the latest compatible patch and run the existing tests.",
+      "expect_trigger": false,
+      "reason": "dependency maintenance"
+    }
+  ]
+}
