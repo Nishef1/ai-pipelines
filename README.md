@@ -129,6 +129,80 @@ Or copy `skills/design-pipeline/` into the skills directory supported by your ag
 
 Installing Design Pipeline installs only this orchestration skill. Optional providers remain separate and require an explicit decision by the user/project.
 
+## Use it on an existing project
+
+Install the skill once in the agent/harness that works on the repository, then invoke it for material UI/UX work.
+
+Example:
+
+```text
+Use $design-pipeline.
+This is an existing project. Read the canonical product/design/policy sources and actual implementation first.
+Redesign the marketplace materially, but preserve product truth and behavior unless I explicitly ask to change them.
+Use the minimum useful providers, render the result, inspect the important states and breakpoints, and fix material findings before stopping.
+```
+
+You normally do **not** need to tell the skill which provider to use. Provider selection is part of the workflow. If the project already has `DESIGN.md`, tokens, Storybook, Playwright, Figma context, or another evidence system, the pipeline should reuse them instead of creating parallel sources.
+
+For a mature application, the most useful input is usually the **task and scope**, not a long style prompt. Canonical project context should supply the rest.
+
+## Use it on a brand-new project
+
+A greenfield project does **not** need `PRODUCT.md`, `DESIGN.md`, Storybook, Figma, or any optional provider before the first run.
+
+A useful starting prompt can be short:
+
+```text
+Use $design-pipeline to design and build a new website for [product].
+Primary audience: [who].
+Main outcome: [what the user should accomplish].
+Known constraints: [stack, language, accessibility, legal/business constraints, existing assets].
+I have no established visual identity yet.
+Explore materially different directions only if the decision is important enough to justify it, then build and verify the selected direction.
+```
+
+If some context is missing, Design Pipeline keeps a temporary run brief, infers only low-risk details, marks meaningful assumptions, and asks a targeted question only when an unresolved choice would materially change the result.
+
+It should **not** create permanent documentation merely to satisfy a provider. Once a visual direction has actually been accepted and the project will benefit from durable design memory, `DESIGN.md` can be created or evolved to record the stable visual system.
+
+The intended greenfield sequence is:
+
+```text
+idea / user need
+    ↓
+temporary run brief
+    ↓
+classify surface + design freedom
+    ↓
+optional direction exploration
+    ↓
+select direction
+    ↓
+build
+    ↓
+render + evaluate
+    ↓
+only then persist durable design memory if useful
+```
+
+## Use it in ChatGPT
+
+Design Pipeline follows the open Agent Skills format, so the same skill can be used in ChatGPT **when the account/workspace exposes Personal Skills**.
+
+In an eligible ChatGPT workspace:
+
+1. Open **Plugins** in the ChatGPT sidebar.
+2. Open the **Skills** tab.
+3. Choose **Create** → **Upload from your computer**.
+4. Upload the Design Pipeline skill while preserving the `SKILL.md`, `agents/`, and `references/` structure.
+5. After ChatGPT scans and installs it, invoke it explicitly or allow ChatGPT to select it when relevant.
+
+As of **2026-08-13**, OpenAI's official documentation says Personal Skills are generally available for **ChatGPT Business, Enterprise, Healthcare, and Edu**. Availability can also depend on workspace permissions. Personal Skills added on one ChatGPT surface do not automatically sync to every other surface.
+
+ChatGPT **Plus is not currently listed among the plans with general Personal Skills availability**. Plus does include Codex, so Plus users can still use this repository as a Codex skill even when the Personal Skills UI is unavailable in ChatGPT web.
+
+If an account does not expose Personal Skills, attaching or pasting the skill instructions into a normal chat can provide temporary context, but that is **not the same as installing a reusable Skill**.
+
 ## Usage
 
 Invoke it explicitly when desired:
