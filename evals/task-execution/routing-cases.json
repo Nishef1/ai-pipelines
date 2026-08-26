@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "micro-rename",
+      "prompt": "Rename this exported helper and update its direct references without changing behavior.",
+      "expect_trigger": true,
+      "expected_rigor": "micro"
+    },
+    {
+      "id": "micro-copy",
+      "prompt": "Rewrite this error message so it is clearer and shorter.",
+      "expect_trigger": true,
+      "expected_rigor": "micro"
+    },
+    {
+      "id": "standard-bug",
+      "prompt": "Fix this checkout bug and verify the same reproduction fails before the fix and passes after it.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
+    },
+    {
+      "id": "standard-review-flow",
+      "prompt": "Review the buyer purchase flow end to end, tell me what is actually blocking launch, fix the required issues, and tell me when this target is done.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
+    },
+    {
+      "id": "standard-plan",
+      "prompt": "Plan the implementation of this notification feature, inspect the existing architecture first, and do not start coding until the material unknowns are resolved.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
+    },
+    {
+      "id": "standard-design-domain",
+      "prompt": "Redesign this marketplace product page, preserve product behavior, render the result, and fix material UX or visual problems before stopping.",
+      "expect_trigger": true,
+      "expected_rigor": "standard",
+      "expected_domain_skill": "design-pipeline"
+    },
+    {
+      "id": "critical-authorization",
+      "prompt": "Fix authorization on GET /orders/:id so one user can never read another user's order, then verify the boundary with a real counterexample.",
+      "expect_trigger": true,
+      "expected_rigor": "critical"
+    },
+    {
+      "id": "critical-payment",
+      "prompt": "Implement payment retry and reconciliation so an unknown provider outcome cannot create duplicate charges or silently lose the order state.",
+      "expect_trigger": true,
+      "expected_rigor": "critical"
+    },
+    {
+      "id": "critical-migration",
+      "prompt": "Plan and implement this production database migration without a long blocking rewrite, and give me a rollback/recovery path before execution.",
+      "expect_trigger": true,
+      "expected_rigor": "critical"
+    },
+    {
+      "id": "long-orchestrated",
+      "prompt": "Implement these independent frontend, API, and worker changes. Parallelize only the parts that do not share mutable state, verify each leaf as it finishes, then run the integration flow.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
+    },
+    {
+      "id": "analysis-deliverable",
+      "prompt": "Analyze these three implementation options, recommend one against our current constraints, and give me the decision with the evidence you used.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
+    },
+    {
+      "id": "pure-factual-question",
+      "prompt": "What is the capital of Japan?",
+      "expect_trigger": false,
+      "reason": "pure factual lookup with no work product or execution target"
+    },
+    {
+      "id": "concept-explanation",
+      "prompt": "What is a closure in JavaScript?",
+      "expect_trigger": false,
+      "reason": "ordinary explanatory question, not an execution workflow"
+    },
+    {
+      "id": "greeting",
+      "prompt": "Hi, how are you?",
+      "expect_trigger": false,
+      "reason": "conversation only"
+    }
+  ]
+}

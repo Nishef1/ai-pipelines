@@ -1,0 +1,4 @@
+interface:
+  display_name: "Task Execution"
+  short_description: "Plan, execute, verify, prioritize, and stop"
+  default_prompt: "Use $task-execution as the default execution harness for this actionable request. Calibrate rigor to the task, stay in planning until material unknowns are bounded, use relevant domain skills as specialists, verify claims with real evidence, distinguish required from optional findings, recommend the highest-leverage next move, and stop when the current target is met."
