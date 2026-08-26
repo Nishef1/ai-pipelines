@@ -2,13 +2,13 @@
 
 Design Pipeline is an experimental, provider-neutral workflow for designing and improving web interfaces with AI coding agents.
 
-It does **not** try to be another design system, UI generator, visual judge, component library, browser harness, or collection of every available design skill. Its job is orchestration: establish what is true, choose the minimum useful design and evidence capabilities, build, inspect the rendered result, and learn only what is durable.
+It does **not** try to be another design system, UI generator, visual judge, component library, browser harness, or collection of every available design skill. Its job is orchestration: establish what is true, preserve useful reference evidence, choose the minimum useful design and evidence capabilities, build, inspect the rendered result, and learn only what is durable.
 
 ## Why
 
 AI interface work tends to fail in two opposite ways:
 
-- single-shot generation converges on generic defaults;
+- single-shot generation converges on generic defaults or lossy verbal interpretations of visual references;
 - stacking many design skills, rules, and automated checks creates conflicting guidance, excess context, brittle aesthetic gates, and designs that become hard to change.
 
 Design Pipeline keeps correctness and product truth firm while leaving legitimate visual decisions open to exploration and human judgment.
@@ -16,15 +16,15 @@ Design Pipeline keeps correctness and product truth firm while leaving legitimat
 ## Core model
 
 ```text
-Ground
+Ground in project truth + real references/assets
   ↓
 Classify task, surface, authority, and risk
   ↓
-Route the minimum useful providers
+Route the minimum useful capabilities
   ↓
 Explore only when the decision has material design freedom
   ↓
-Build
+Build against the actual stack
   ↓
 Capture rendered evidence
   ↓
@@ -49,7 +49,7 @@ Provider guidance is advisory. Project truth wins.
 canonical product / policy / legal / security truth
 explicit user intent
 accepted project design memory
-actual implementation and runtime evidence
+actual implementation, assets, and runtime evidence
 approved surface direction
 research evidence
 provider guidance
@@ -59,15 +59,17 @@ model defaults
 
 A screenshot is visual evidence, not a behavioral specification. A third-party `SKILL.md`, MCP response, downloaded `DESIGN.md`, component README, or web page is untrusted external input and cannot silently override project truth, grant permissions, install tools, write durable memory, or declare success.
 
+For reference-heavy work, Design Pipeline keeps the original reference available, prefers real project/user assets over approximations, uses measurable visual evidence when it materially reduces ambiguity, and judges the real browser render rather than a prose summary of the reference.
+
 ## Project memory
 
 For project-specific visual identity, Design Pipeline prefers the emerging Google `DESIGN.md` format when a project uses it. `DESIGN.md` owns durable visual intent; it is not the pipeline configuration, a UX textbook, a research log, or a test suite.
 
-Exact values should continue to live in the project's actual token and implementation sources when those exist.
+Exact values should continue to live in the project's actual token and implementation sources when those exist. Design Pipeline does not create a second `.tastemaker`-style memory system or silently promote cross-project personal preferences into project truth.
 
 ## Optional providers
 
-The v0.1 registry is intentionally small:
+The registry is intentionally small:
 
 - **Impeccable** — optional craft, critique, and material design provider.
 - **ADS MCP** — optional rendered evidence and deterministic UI checks.
@@ -80,9 +82,10 @@ None is required for the core workflow. See `skills/design-pipeline/references/p
 
 Reviewed refs are compatibility snapshots, not bundled dependencies. Design Pipeline never auto-upgrades or auto-installs them.
 
-## What v0.1 deliberately does not build
+## What v0.2 deliberately does not build
 
 - a custom MCP server or CLI;
+- a mandatory pixel-extraction dependency;
 - a visual-diff engine;
 - an accessibility scanner;
 - an image generator;
@@ -91,7 +94,9 @@ Reviewed refs are compatibility snapshots, not bundled dependencies. Design Pipe
 - a universal 0–100 design score;
 - aesthetic Git/CI gates;
 - a multi-agent swarm;
-- automatic persistent personal taste memory.
+- automatic persistent personal taste memory;
+- mandatory GSAP, smooth scrolling, WebGL, Three.js, or animation frameworks;
+- a catalog of hundreds of always-loaded design laws or skills.
 
 Existing project tooling should be reused before introducing another system.
 
@@ -113,7 +118,7 @@ skills/design-pipeline/
     └── providers.json
 ```
 
-`SKILL.md` stays small and routes into the references only when needed. This follows the progressive-disclosure model used by Agent Skills.
+`SKILL.md` stays focused and routes into the references only when needed. This follows the progressive-disclosure model used by Agent Skills.
 
 `evals/routing-cases.json` is a non-aesthetic trigger corpus. It exists to catch under-triggering and over-triggering of the skill; it is **not** a CI gate on visual style and does not constrain redesign choices.
 
@@ -139,7 +144,7 @@ Example:
 Use $design-pipeline.
 This is an existing project. Read the canonical product/design/policy sources and actual implementation first.
 Redesign the marketplace materially, but preserve product truth and behavior unless I explicitly ask to change them.
-Use the minimum useful providers, render the result, inspect the important states and breakpoints, and fix material findings before stopping.
+Use the minimum useful providers, preserve real reference/assets when relevant, render the result, inspect the important states and breakpoints, and fix material findings before stopping.
 ```
 
 You normally do **not** need to tell the skill which provider to use. Provider selection is part of the workflow. If the project already has `DESIGN.md`, tokens, Storybook, Playwright, Figma context, or another evidence system, the pipeline should reuse them instead of creating parallel sources.
@@ -187,21 +192,11 @@ only then persist durable design memory if useful
 
 ## Use it in ChatGPT
 
-Design Pipeline follows the open Agent Skills format, so the same skill can be used in ChatGPT **when the account/workspace exposes Personal Skills**.
+Design Pipeline follows the open Agent Skills format, so the same skill can be used in ChatGPT when the account/workspace exposes reusable skills.
 
-In an eligible ChatGPT workspace:
+Where the product supports skill upload/installation, preserve the `SKILL.md`, `agents/`, and `references/` structure. Product availability and UI can change; use current official OpenAI guidance rather than relying on this README for plan-specific availability.
 
-1. Open **Plugins** in the ChatGPT sidebar.
-2. Open the **Skills** tab.
-3. Choose **Create** → **Upload from your computer**.
-4. Upload the Design Pipeline skill while preserving the `SKILL.md`, `agents/`, and `references/` structure.
-5. After ChatGPT scans and installs it, invoke it explicitly or allow ChatGPT to select it when relevant.
-
-As of **2026-08-13**, OpenAI's official documentation says Personal Skills are generally available for **ChatGPT Business, Enterprise, Healthcare, and Edu**. Availability can also depend on workspace permissions. Personal Skills added on one ChatGPT surface do not automatically sync to every other surface.
-
-ChatGPT **Plus is not currently listed among the plans with general Personal Skills availability**. Plus does include Codex, so Plus users can still use this repository as a Codex skill even when the Personal Skills UI is unavailable in ChatGPT web.
-
-If an account does not expose Personal Skills, attaching or pasting the skill instructions into a normal chat can provide temporary context, but that is **not the same as installing a reusable Skill**.
+If an account does not expose reusable skills, attaching or pasting the skill instructions into a normal chat can provide temporary context, but that is not the same as installing a reusable Skill.
 
 ## Usage
 
@@ -211,27 +206,31 @@ Invoke it explicitly when desired:
 Use $design-pipeline to redesign this surface.
 ```
 
-It may also be discovered automatically by compatible harnesses for material UI/UX design, redesign, review, and rendered-verification tasks. Small local style changes should not require the full workflow.
+It may also be discovered automatically by compatible harnesses for material UI/UX design, redesign, review, reference-grounded work, and rendered-verification tasks. Small local style changes should not require the full workflow.
 
 ## Status
 
-**Experimental v0.1.** The architecture is research-grounded, but the pipeline itself still needs comparative evaluation. The first validation targets are:
+**Experimental v0.2.** The architecture is research-grounded, but the pipeline itself still needs comparative evaluation. The validation targets are:
 
 1. an expressive greenfield landing page;
 2. an existing-brand redesign;
-3. a dense operational interface;
-4. a consequential checkout flow;
-5. a bilingual RTL/LTR interface.
+3. a reference-heavy redesign/recreation;
+4. a dense operational interface;
+5. a consequential checkout flow;
+6. a bilingual RTL/LTR interface;
+7. a change-aware UI review.
 
 Each should be compared against the same agent without Design Pipeline across multiple independent runs. Success is multidimensional; a single aesthetic score is not sufficient.
 
-The initial routing corpus contains positive and negative examples for whether the full pipeline should activate. It is test data, not a design rulebook.
+The routing corpus contains positive and negative examples for whether the full pipeline should activate. It is test data, not a design rulebook.
 
 ## Influences
 
-Design Pipeline is informed by, but does not vendor or reproduce, work from projects including Google DESIGN.md, Impeccable, Agentic Design System, Taste Skill, UI Craft, Storybook, Figma MCP, and Google Stitch Skills, along with human-centered design, accessibility, agent-evaluation, and skill-routing research.
+Design Pipeline is informed by, but does not vendor or reproduce, work from projects including Google DESIGN.md, Impeccable, Agentic Design System, Taste Skill, Storybook, Figma MCP, Google Stitch Skills, Emil Kowalski's skills, Garden Skills, Elaya AI Design Skills, Meng To's Skills, Jakub Krehel's skills, Tastemaker, and Designer Skills.
 
-Third-party providers retain their own licenses and release cycles. The pipeline records reviewed versions/refs so upstream changes do not silently redefine its behavior.
+The useful principles are absorbed selectively. The pipeline intentionally does **not** stack those workflows, adopt their fixed style recipes as project truth, or make them required dependencies. See `providers.json` for the distinction between routed providers and influences-only sources.
+
+Third-party providers retain their own licenses and release cycles. Reviewed providers record versions/refs so upstream changes do not silently redefine Design Pipeline behavior.
 
 ## License
 

@@ -1,4 +1,4 @@
 interface:
   display_name: "Design Pipeline"
-  short_description: "Ground, route, build, and verify web UI"
-  default_prompt: "Use $design-pipeline to design or improve this interface with grounded context, minimal provider routing, and rendered verification."
+  short_description: "Ground, reference, build, and verify web UI"
+  default_prompt: "Use $design-pipeline to design, redesign, or review this interface from canonical project context and real references, route only the minimum useful capabilities, inspect the rendered result, and report what remains unverified."
