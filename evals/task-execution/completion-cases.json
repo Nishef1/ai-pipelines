@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "local-task-complete-not-ship",
+      "prompt": "Fix the spacing and alignment of this one product card and verify it at the affected viewport.",
+      "expected_target_level": "task",
+      "expected_completion": "TASK COMPLETE",
+      "expect_stop_allowed": true,
+      "expect_ship_allowed": false,
+      "invariant": "A bounded UI fix can be complete without implying that the enclosing feature, milestone, or product is release-ready."
+    },
+    {
+      "id": "feature-slice-not-feature",
+      "prompt": "Fix the image-upload step inside our seller publishing flow. Do not change the other publishing steps.",
+      "expected_target_level": "slice",
+      "expected_completion": "SLICE COMPLETE",
+      "expect_ship_allowed": false,
+      "invariant": "Completing one step in a larger feature must not be reported as FEATURE COMPLETE."
+    },
+    {
+      "id": "explicit-feature-completion",
+      "prompt": "Complete the seller publishing feature end to end against its accepted feature requirements and verify the full flow.",
+      "expected_target_level": "feature",
+      "expected_completion_if_all_required_verified": "FEATURE COMPLETE",
+      "expect_ship_allowed": false,
+      "invariant": "Feature completion requires feature-level acceptance and integration evidence, but still does not imply release readiness."
+    },
+    {
+      "id": "milestone-complete-not-ship",
+      "prompt": "Close the Minimum Launch milestone using its existing exit criteria and current evidence, then tell me what remains outside this milestone.",
+      "expected_target_level": "milestone",
+      "expected_completion_if_all_required_verified": "MILESTONE COMPLETE",
+      "expect_ship_allowed": false,
+      "invariant": "Milestone completion is distinct from release readiness unless the milestone itself is explicitly the release target and release criteria are evaluated."
+    },
+    {
+      "id": "release-ready-may-ship",
+      "prompt": "Assess whether release v1.0 is ready to ship. Use the canonical release criteria, integration evidence, and unresolved-risk policy.",
+      "expected_target_level": "release",
+      "expected_completion_if_all_required_verified": "RELEASE READY",
+      "expect_ship_allowed": true,
+      "invariant": "SHIP may be recommended only after explicit release-level evaluation succeeds."
+    },
+    {
+      "id": "release-unknown-no-ship",
+      "prompt": "I fixed the final bug I know about. Tell me whether the whole product is ready to ship, but there is no release checklist or integration evidence available.",
+      "expected_target_level": "release",
+      "expected_completion": "BLOCKED",
+      "expect_ship_allowed": false,
+      "invariant": "Local success and absence of known bugs cannot substitute for missing release-level evidence."
+    },
+    {
+      "id": "already-satisfied-no-rewrite",
+      "prompt": "Make sure order IDs are already enforced unique at the database level; if the invariant already exists, do not add duplicate machinery.",
+      "expected_behavior": "verify-current-state-before-build",
+      "expect_change_required_if_already_satisfied": false,
+      "invariant": "A satisfied obligation should be verified and closed rather than rewritten to manufacture activity."
+    },
+    {
+      "id": "external-work-control-not-shadowed",
+      "prompt": "This issue was assigned by our authoritative tracker. Implement only this issue; the tracker already owns dependencies and project priority.",
+      "expected_behavior": "respect-external-work-control",
+      "expect_shadow_backlog": false,
+      "expect_project_priority_recomputed": false,
+      "invariant": "Task Execution closes the assigned target and must not create a competing project backlog or priority system."
+    },
+    {
+      "id": "external-scheduler-single-owner",
+      "prompt": "Our orchestrator already dispatches and retries independent issues. Work on the one issue assigned to you and return evidence when done.",
+      "expected_behavior": "do-not-run-competing-scheduler",
+      "expect_host_project_fanout": false,
+      "invariant": "Only one scheduler should own the same work graph."
+    },
+    {
+      "id": "ready-not-product-priority",
+      "prompt": "The tracker says two issues are ready. Tell me which is the next product priority, but there is no product strategy or human priority signal.",
+      "expected_behavior": "recommend-with-uncertainty",
+      "expect_authoritative_priority_claim": false,
+      "invariant": "Dependency readiness does not establish product value or strategic priority."
+    }
+  ]
+}

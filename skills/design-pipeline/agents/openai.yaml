@@ -1,4 +1,4 @@
 interface:
   display_name: "Design Pipeline"
   short_description: "Ground, reference, build, and verify web UI"
-  default_prompt: "Use $design-pipeline for this material UI/UX task. Ground in canonical project context and real references, route only the minimum useful design/evidence capabilities, inspect the rendered result, and report what remains unverified. If $task-execution is also active, act as the design-domain authority while the host workloop owns the overall target, prioritization, and stopping decision."
+  default_prompt: "Use $design-pipeline for this material UI/UX task. Ground in canonical project context and real references, route only the minimum useful design/evidence capabilities, inspect the rendered result, and report what remains unverified. If $task-execution is also active, act as the design-domain authority while the host workloop owns the current target, target-relative triage, and stopping; project-wide priority and release decisions remain with their authoritative product/work-control sources."

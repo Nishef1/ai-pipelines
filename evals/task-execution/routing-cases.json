@@ -21,9 +21,10 @@
     },
     {
       "id": "standard-review-flow",
-      "prompt": "Review the buyer purchase flow end to end, tell me what is actually blocking launch, fix the required issues, and tell me when this target is done.",
+      "prompt": "Review the buyer purchase flow end to end, tell me what is actually blocking this feature target, fix the required issues, and tell me when this target is done without making a release claim.",
       "expect_trigger": true,
-      "expected_rigor": "standard"
+      "expected_rigor": "standard",
+      "expected_target_level": "feature"
     },
     {
       "id": "standard-plan",
@@ -37,6 +38,19 @@
       "expect_trigger": true,
       "expected_rigor": "standard",
       "expected_domain_skill": "design-pipeline"
+    },
+    {
+      "id": "standard-release-readiness",
+      "prompt": "Assess whether release v1.0 is ready to ship against the existing release criteria and integration evidence. Do not infer readiness from a few completed tasks.",
+      "expect_trigger": true,
+      "expected_rigor": "standard",
+      "expected_target_level": "release"
+    },
+    {
+      "id": "standard-external-control-plane",
+      "prompt": "Implement the issue assigned by our tracker. The tracker owns project priority and dependencies; do not build a second backlog or reschedule sibling issues.",
+      "expect_trigger": true,
+      "expected_rigor": "standard"
     },
     {
       "id": "critical-authorization",
@@ -58,7 +72,7 @@
     },
     {
       "id": "long-orchestrated",
-      "prompt": "Implement these independent frontend, API, and worker changes. Parallelize only the parts that do not share mutable state, verify each leaf as it finishes, then run the integration flow.",
+      "prompt": "Implement these independent frontend, API, and worker changes. You own scheduling inside this one target: parallelize only parts that do not share mutable state, verify each leaf as it finishes, then run the integration flow.",
       "expect_trigger": true,
       "expected_rigor": "standard"
     },
