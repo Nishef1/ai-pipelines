@@ -29,7 +29,7 @@ Do not add multiple skills that all claim to be the generic planning/execution h
 Do not create overlapping orchestration or state layers.
 
 - `task-execution` is the default **HOST**. It owns task framing, rigor calibration, planning closure, execution phases, current-target evidence, target-relative triage, next moves, and stopping.
-- `task-execution` does **not** own product-wide strategy/priority, an authoritative external backlog, or an external scheduler merely because it can reason about them.
+- `task-execution` does **not** own product-wide strategy/priority, an authoritative external backlog, an external scheduler, or repository delivery policy merely because it can reason about them.
 - Domain skills such as `design-pipeline` own domain-specific quality criteria, classification, tools/providers, and domain evidence.
 - A domain skill may tighten requirements for its specialty but must not silently replace the host target, create a competing global ledger, or promote every domain finding into active work.
 - A host workloop must not override domain-specific rules merely to make its own generic checks pass.
@@ -38,6 +38,16 @@ Do not create overlapping orchestration or state layers.
 Use at most **one authoritative work tracker** and **one scheduler/orchestrator** for the same work graph. Local task gates may cache current-target evidence but must not become a shadow roadmap/backlog/project-state system.
 
 If a skill can work standalone, preserve that property. Composition should be cooperative, not a hard runtime dependency.
+
+## Repository delivery semantics
+
+Do not confuse an explicitly requested repository modification with an unrequested external side effect.
+
+When the user asks to implement/fix/update/change/refactor/redesign/add/remove project code or files and the actual repository is writable, the implementation must be applied to that repository. A generated patch/diff is not an adequate final deliverable unless the user asked for one or direct write is genuinely unavailable/forbidden.
+
+Commit/push policy is supplied by the user/project/repository. If that policy requires commit and push for completed changes, treat them as Required completion obligations and do not ask for redundant confirmation before performing them.
+
+Keep consequential actions distinct: production deploy/release publication, force-push/history rewrite, destructive remote-data changes, purchases, external communications, and unrelated account/repository mutations require whatever separate authorization their context demands.
 
 ## Progressive disclosure
 

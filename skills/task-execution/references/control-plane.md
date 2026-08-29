@@ -1,6 +1,6 @@
 # Control Plane Boundaries
 
-Use when project state, issue tracking, specs, milestones, external orchestration, multi-agent scheduling, or release state is involved.
+Use when project state, issue tracking, specs, milestones, external orchestration, multi-agent scheduling, repository delivery policy, or release state is involved.
 
 ## Why this boundary exists
 
@@ -12,6 +12,7 @@ What work has been accepted?
 What is ready to execute?
 What should run now?
 How should this task be implemented?
+How is the repository change delivered?
 What evidence proves it?
 Is a release ready?
 ```
@@ -35,16 +36,25 @@ Owns dispatch, concurrency, retries, workspace lifecycle, and work-item transiti
 
 Use **one scheduler** for the same work graph. Task Execution may parallelize child units only when it actually owns scheduling inside the current target.
 
+### Repository delivery policy
+Owns the applicable branch, commit/push expectations, PR requirements, and other repository-delivery rules.
+
+An explicit user request to modify repository code/files authorizes the ordinary in-scope source mutation needed to carry out that request when write access exists. A remote Git provider does not make the source edit a new approval boundary by itself.
+
+If user/project policy says completed repository changes are committed and pushed, those actions are part of delivery and should not trigger a second confirmation request.
+
+This does **not** automatically authorize production deployment/release publication, force-push/history rewriting, destructive remote data changes, purchases, external communications, or unrelated repository/account mutations.
+
 ### Task Execution
 Owns understanding, planning closure, bounded implementation, evidence, target-relative triage, and stopping for the currently selected/assigned target.
 
-It must not invent a second backlog, dependency graph, or project roadmap to compensate for missing context.
+It must not invent a second backlog, dependency graph, project roadmap, or repository delivery policy to compensate for missing context.
 
 ### Domain skills
 Own specialty-specific criteria, tools, and domain evidence: design, security, database, deployment, reliability, and similar concerns.
 
 ### Evidence layer
-Runtime behavior, tests, browser/render state, logs, data, schemas, and other reproducible observations determine what is actually supported.
+Runtime behavior, tests, browser/render state, logs, data, schemas, actual repository content, and other reproducible observations determine what is actually supported.
 
 ### Release judgment
 Consumes release requirements plus current integration/evidence. It is not implied by closing a task or feature.
@@ -57,6 +67,7 @@ Prefer:
 one product truth per product concern
 one authoritative work tracker
 one scheduler/orchestrator
+one repository delivery policy
 one current-target execution host
 ```
 
@@ -68,6 +79,7 @@ Avoid patterns such as:
 issue tracker + hand-maintained STATE.md + separate agent backlog
 external scheduler + task-execution project scheduler
 spec system + duplicate feature contract in a gate file
+requested code change + patch-only handoff despite available write access
 ```
 
 Local execution gates may reference tracker/spec IDs, but they should store only the evidence needed to close the current target.
@@ -121,7 +133,7 @@ optionally update status when authorized
 
 Keep provider-specific commands and volatile behavior outside the host core where possible.
 
-External writes to trackers, issue systems, or orchestrators remain subject to the user's/project's authorization policy.
+External writes to trackers, issue systems, or orchestrators remain subject to the user's/project's authorization policy. Do not generalize that restriction to ordinary source-file edits that were already explicitly requested.
 
 ## When no control plane exists
 

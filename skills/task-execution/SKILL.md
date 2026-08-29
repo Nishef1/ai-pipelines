@@ -1,9 +1,9 @@
 ---
 name: task-execution
-description: "Default execution discipline for actionable requests. Use whenever the user asks you to do, build, fix, change, review, audit, investigate, analyze, plan, write, redesign, debug, refactor, verify, or otherwise complete work — including simple tasks. Calibrate rigor, bind work to the narrowest justified target level, plan until material unknowns are bounded, make only justified changes, verify with real evidence, distinguish required from optional findings, triage only within the active target, and stop when that target is actually met. Product strategy, authoritative work tracking, external scheduling/orchestration, and domain skills remain authoritative for their own concerns. SHIP is reserved for an explicitly evaluated release target, not ordinary task completion."
+description: "Default execution discipline for actionable requests. Use whenever the user asks you to do, build, fix, change, review, audit, investigate, analyze, plan, write, redesign, debug, refactor, verify, or otherwise complete work — including simple tasks. Calibrate rigor, bind work to the narrowest justified target level, plan until material unknowns are bounded, make only justified changes, apply requested repository changes to the real working surface instead of stopping at a patch, verify with real evidence, distinguish required from optional findings, triage only within the active target, and stop when that target is actually met. Product strategy, authoritative work tracking, external scheduling/orchestration, repository delivery policy, and domain skills remain authoritative for their own concerns. SHIP is reserved for an explicitly evaluated release target, not ordinary task completion."
 license: MIT
 metadata:
-  version: 1.4.0
+  version: 1.5.0
 ---
 
 # Task Execution
@@ -22,7 +22,7 @@ Target level → Finish line → UNDERSTAND → PLAN → BUILD → JUDGE → BRE
                                             DISCOVER at real milestones
 ```
 
-Domain skills define what good looks like in their specialty. Task Execution owns execution framing, target-local scope, planning closure, evidence accounting, target-relative triage, and stopping. It does **not** own product strategy, the project-wide backlog, or an external scheduler merely because it can reason about them.
+Domain skills define what good looks like in their specialty. Task Execution owns execution framing, target-local scope, planning closure, evidence accounting, target-relative triage, and stopping. It does **not** own product strategy, the project-wide backlog, an external scheduler, or repository delivery policy merely because it can reason about them.
 
 ## 1. Calibrate rigor
 
@@ -93,7 +93,24 @@ Core boundaries:
 
 Use at most one authoritative work tracker and one scheduler at a time. Do not create a shadow `PROJECT_STATE`, roadmap, backlog, or issue graph merely to make this skill feel complete. If no project-level control plane exists, keep the working state local to the current target rather than inventing one.
 
-Read `references/control-plane.md` when an issue tracker, spec lifecycle, project scheduler, multi-agent orchestrator, or persistent project state is involved.
+### Requested repository mutation is already part of execution
+
+When the user explicitly asks to **implement, fix, update, change, refactor, redesign, add, remove, or otherwise modify project code/files**, that request authorizes the ordinary in-scope repository mutations necessary to perform the work when write access is available.
+
+Do not prepare a patch/diff/proposed file and then ask whether to apply it when the user already requested the change and the actual repository is writable. A patch is an intermediate representation, not the completed deliverable, unless:
+
+- the user explicitly requested a patch/diff instead of repository modification;
+- direct repository write access is unavailable;
+- repository permissions/policy prohibit the write; or
+- a genuine external blocker prevents application.
+
+Using GitHub or another remote repository provider does not by itself turn an ordinary requested source edit into a new external side effect requiring reconfirmation.
+
+Repository **commit/push behavior follows the active user/project delivery policy**. If that policy says completed repository changes must be committed and pushed, commit and push are Required delivery obligations and must be performed without asking for a second confirmation. Use the branch required by the repository/project/current request and do not create extra branches or PRs unless policy or the user requires them.
+
+Keep consequential actions separate. A normal code-change request does not by itself authorize production deployment, publishing a release, force-push/history rewriting, destructive remote data operations, purchases/cost-bearing actions, external messages/comments, or unrelated repository/account changes.
+
+Read `references/control-plane.md` when an issue tracker, spec lifecycle, project scheduler, multi-agent orchestrator, persistent project state, or repository-delivery authorization boundary is involved.
 
 ## 4. UNDERSTAND — compile a Task Contract
 
@@ -248,6 +265,7 @@ Before editing, identify the source of truth, read the code/content being change
 During editing:
 
 - make the minimum coherent change;
+- when repository mutation was requested and write access exists, modify the **actual repository working surface**; do not substitute a downloadable patch/proposal for execution;
 - avoid speculative features, abstractions, configurability, and unrelated cleanup;
 - preserve necessary security, correctness, testability, maintainability, accessibility, and architecture — simplicity removes **accidental**, not required, complexity;
 - do not weaken tests/contracts/checks/boundaries merely to pass;
@@ -280,6 +298,8 @@ For each Required claim:
 6. record what was covered and what was not.
 
 Evidence states: **VERIFIED, FAILED, UNKNOWN, STALE, N/A/OUT OF SCOPE**.
+
+If the target includes repository mutation, verify the **written repository state**, not merely the generated patch. When the active delivery policy requires commit/push, inspect the final diff/status as applicable, commit the coherent completed change, push the required branch, and verify the resulting remote commit/ref when practical. A commit/push failure is a blocker to that delivery obligation, not a reason to pretend the patch was delivered.
 
 If the product is not observable enough to verify a material claim, mark the claim `UNKNOWN` or coverage degraded. Do not replace missing observability with more reasoning and call it proof. When worthwhile, recommend the smallest legibility improvement that would make the claim reproducible.
 
@@ -382,6 +402,8 @@ Treat these as diagnostic alarms:
 - “That failure isn't mine…” → prove isolation before dismissing it.
 - “This issue is closed, so the feature is done…” → tracker status is not behavioral proof.
 - “This task belongs to launch, so ship…” → completion scope was silently promoted.
+- “Patch ready; ask whether to apply…” → if mutation was requested and write access exists, execution stopped before delivery.
+- “GitHub is external, so ask before editing…” → ordinary requested source mutation was misclassified as a new side effect.
 
 ## 17. Context and persistent state
 
@@ -436,6 +458,8 @@ Use completion language that matches scope:
 
 `STOP` is an **execution decision** and is valid at any target level: there is no more Required work for the current target.
 
+For repository-change targets, Required delivery obligations include applying the real repository mutation. If the active user/project policy requires commit and push, `STOP`/`COMPLETE` is not valid until the coherent change is committed and pushed, or a genuine credential/permission/network/policy blocker is reported.
+
 `SHIP` is **not** a generic completion status. Use or recommend `SHIP` only when `Target Level = RELEASE`, the release is `RELEASE READY`, and the user/project's release policy permits the action. Completing a task, slice, feature, or milestone does not authorize a release claim.
 
 When the Current Target is met, **stop the main loop**. Do not keep working merely because the enclosing feature/product has more future work.
@@ -465,7 +489,8 @@ For an explicit release target that is `RELEASE READY`, a next action may be `SH
 - never invent findings merely to remain active;
 - never expand scope without evidence and target impact;
 - never turn subjective preference into a blocker;
-- never create a project-control artifact merely because context feels incomplete when an authoritative source can be queried instead.
+- never create a project-control artifact merely because context feels incomplete when an authoritative source can be queried instead;
+- never convert requested implementation into a patch-only handoff merely to avoid an authorized repository write.
 
 ## 22. Final report audit
 
@@ -478,6 +503,7 @@ Completion scope: TASK | SLICE | FEATURE | MILESTONE | RELEASE
 Status: COMPLETE | BLOCKED | RELEASE READY
 Completed:
 Evidence:
+Repository delivery: applied / commit / push, when applicable
 Coverage limits:
 Required remaining for Current Target:
 Next moves: ≤ 3 when useful
@@ -487,4 +513,4 @@ Use `RELEASE READY` only at release scope. For ordinary completed work use `COMP
 
 ## Core invariant
 
-> Optimize for the user's finite current target, not activity or imagined product completion: bind work to the narrowest justified scope, respect external product/work control, plan until material unknowns are bounded, make the smallest justified change, reproduce real evidence, challenge what matters, expose what remains unknown, and stop when that target is met. Never turn local completion into a release claim.
+> Optimize for the user's finite current target, not activity or imagined product completion: bind work to the narrowest justified scope, respect external product/work control and repository delivery policy, plan until material unknowns are bounded, perform requested repository mutations on the real working surface, make the smallest justified change, reproduce real evidence, challenge what matters, expose what remains unknown, fulfill required commit/push delivery, and stop when that target is met. Never substitute a patch for an authorized requested change, and never turn local completion into a release claim.
