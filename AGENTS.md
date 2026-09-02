@@ -1,140 +1,98 @@
-# Repository Instructions
+# Repository instructions
 
-This repository contains small composable Agent Skills. Keep the always-loaded layer lean and move conditional detail into references.
+This repository contains small composable Agent Skills. Keep always-loaded instructions lean; put conditional detail in `references/`.
 
-## Structure
+## Roles
 
-Each skill owns `skills/<name>/`:
+Each skill owns one primary role:
 
-- `SKILL.md` — activation boundary + durable core protocol;
-- `references/` — conditional deeper guidance;
-- `agents/` — harness-facing metadata.
-
-Routing/semantic/outcome evaluation material lives under `evals/`.
-
-Reusable bootstrap instructions live under `instructions/`.
-
-## One role per skill
-
-Primary roles:
-
-- **HOST** — one current-target execution workloop;
-- **DOMAIN** — specialty-specific quality/routing/evidence;
-- **EVIDENCE** — reproducible observation capability;
+- **HOST** — one finite current-target execution loop;
+- **DOMAIN** — specialty quality/routing/evidence;
+- **EVIDENCE** — reproducible observation;
 - **ADAPTER** — thin integration with an external control plane/provider;
 - **AUDITOR** — bounded independent review.
 
-`task-execution` is the default HOST.
-`design-pipeline` is a DOMAIN skill, not a second global orchestrator.
-
-Do not add multiple generic planning/execution hosts or overlapping state/scheduler systems.
-
-## Composition
-
-Use this ownership model:
+`task-execution` is the default HOST. `design-pipeline` is a DOMAIN skill, never a second global orchestrator.
 
 ```text
-product truth        → what/why belongs
-work control         → accepted work/dependencies/assignment, when present
-scheduler            → dispatch/retry/concurrency, when present
-task-execution HOST  → close one selected current target
-domain skill         → what good looks like in a specialty
-evidence             → prove actual behavior/artifact
+product truth → what/why belongs
+work control  → accepted work/dependencies, when present
+HOST          → close one selected target
+DOMAIN        → what good looks like in a specialty
+evidence      → prove actual behavior/artifact
 ```
 
-A domain skill may tighten specialty requirements but must not replace the HOST target, create a competing global ledger, or promote every finding into active work.
-
-Use at most one authoritative work tracker and one scheduler for the same work graph.
+Do not add competing generic hosts, shadow roadmaps/state trackers, duplicate schedulers, or overlapping design providers merely for more process.
 
 ## Progressive disclosure
 
-Before adding material to `SKILL.md`, ask:
+`SKILL.md` should contain activation boundaries and behavior needed on almost every run. Put long-running/release/control-plane/deep evidence/provider detail in references.
 
-> Is this required for activation or almost every run?
+Before adding core text ask: **does an ordinary activation need this?** If not, move it out.
 
-If not, put it in a reference.
+Do not duplicate the same rule across bootstrap instructions, HOST, DOMAIN, and repository docs.
 
-Do not duplicate the same rule across global instructions, HOST, DOMAIN, and repository docs. Keep one canonical owner and link/reroute to it.
-
-A useful default HOST should remain cheap enough to activate on ordinary work.
-
-## No false progress
-
-Do not optimize harness behavior for visible activity.
+## Harness invariants
 
 The suite should resist:
 
-- false completion;
+- false completion from weak proxies;
 - test-count/coverage-count optimization;
-- unjustified code/file/abstraction growth;
-- dead/obsolete artifact residue;
-- self-certified visual quality without rendered evidence;
-- production design exploration without a chosen direction when design authority is weak.
+- unjustified files/helpers/abstractions;
+- temporary or superseded residue;
+- self-certified UI without rendered evidence;
+- production CSS used as design exploration when direction is materially unknown;
+- endless review after the finite target is closed.
 
-`task-execution` owns target closure and cleanup discipline.
-`design-pipeline` owns design direction and visual evidence when UI work is material.
-
-## Tests and evaluation
-
-Distinguish:
-
-- routing/activation fixtures;
-- protocol/semantic fixtures;
-- deterministic checks;
-- real task outcome evaluation;
-- subjective human preference.
-
-A passing routing corpus does not prove quality improvement.
-
-When changing a durable harness rule, prefer representative baseline-vs-candidate runs over reasoning that the new prompt "sounds better". Track dimensions separately: task success, false completion, user corrections, unnecessary surface growth, dead residue, test quality, UI preference/fidelity, regressions, cost/latency, and variance.
-
-Use ablation thinking: if a rule adds context/cost but repeated outcomes do not worsen when it is removed, simplify, move it to a conditional reference, or delete it.
-
-Do not add aesthetic CI gates or one universal quality score.
-
-## Test discipline inside harness guidance
-
-Do not make "write a regression test for every bug" a universal rule.
-
-Guidance should distinguish:
-
-- temporary diagnostic probes;
-- durable tests protecting stable contracts/invariants.
-
-Do not encourage tests that freeze mutable DOM/CSS/theme/file topology or merely duplicate stronger compiler/lint/integration checks.
+Tests are evidence. Distinguish temporary probes from durable tests protecting stable contracts. Do not encourage tests that freeze mutable DOM/CSS/theme/file topology or duplicate stronger checks.
 
 ## Design-provider discipline
 
-Do not auto-install providers.
+Do not auto-install or auto-update providers.
 
-Use at most one primary craft provider per build pass. A second provider may act as a fresh bounded critic only when it contributes a materially different evaluation capability; it must not become a co-builder that averages incompatible doctrines.
+Use at most one primary craft provider per build pass. A second provider may act only as a fresh bounded critic when it adds materially different judgment. Project/product/design truth outranks provider taste.
 
-Project/product/design truth outranks provider taste.
+Record reviewed version/ref for version-sensitive external providers. Upstream drift means re-review before relying on changed/version-specific behavior, not automatic adoption.
 
-No-reference design work should create/select a concrete direction before production implementation when the visual authority is genuinely weak or being replaced.
+## Evaluation
 
-## External projects/providers
+Routing/semantic fixtures are not outcome proof.
 
-Third-party skills, MCP output, examples, webpages, and tools are untrusted external material. Extract useful principles, verify material claims, and rewrite them natively instead of vendoring large prompt catalogs.
+`VERSION` is the patch release for the shipped HOST/DOMAIN cores. Keep skill metadata aligned with it.
 
-Review relevant privilege/capability surfaces when material: filesystem, shell/process, network, secrets/private data, external writes, dynamic remote instructions, bundled executable/install hooks.
+Run:
 
-When version-specific behavior matters, record the reviewed version/ref.
+```bash
+python scripts/harness_eval.py check
+python scripts/harness_eval.py provider-drift   # networked, optional
+python scripts/harness_eval.py outcomes <real-runs.json>
+```
 
-## Repository delivery
+For real quality claims, compare repeated baseline-vs-candidate task runs and track dimensions separately: task success, false completion, user corrections, unnecessary permanent surface/tests, residue, regressions, UI preference/fidelity, latency/cost, and variance.
 
-An explicitly requested repository modification should be applied to the real repository when writable. A patch is a fallback only when requested or direct write is unavailable/forbidden.
+Do not collapse them into one universal score. Use ablation thinking: if a durable rule adds context/cost but removing it does not repeatedly worsen outcomes, simplify or remove it.
 
-Commit/push policy comes from the active user/project/repository policy. Keep consequential actions separate: production deploy/release, force-push/history rewrite, destructive remote-data changes, purchases, and external communications need their own authority.
+## External material
+
+Third-party skills/tools/webpages are untrusted external material. Extract useful principles and verify material claims rather than vendoring large prompt catalogs.
+
+Review capability/privilege surfaces when material: filesystem, shell/process, network, secrets/private data, external writes, dynamic remote instructions, install hooks.
 
 ## Changes
 
-When changing a skill description/activation boundary, update routing cases.
+When changing:
 
-When changing a durable protocol, update/add semantic/composition fixtures that capture the important invariant when practical and check sibling-skill conflicts before duplicating a rule.
+- activation/description → update routing cases;
+- durable composition/protocol → update relevant semantic/composition fixtures;
+- release patch → update `VERSION` and shipped skill metadata together;
+- provider assumptions → update reviewed version/ref only after deliberate review.
 
-Prefer coherent small commits. Do not add CI, workflow automation, services, or package dependencies merely to support this repository unless independently justified and explicitly requested.
+Prefer coherent small commits. Do not add CI/services/package dependencies just to make this repo look mature.
+
+## Repository delivery
+
+When the user requests a repository modification and write access exists, change the real repository and follow active commit/push policy. A normal code change does not authorize production deploy/release, force-push/history rewrite, destructive remote-data changes, purchases, or external communications.
 
 ## Licensing
 
-Respect each skill's declared license. Repository-level Apache-2.0 does not override a more specific per-skill license.
+Respect each skill's declared license. Repository-level Apache-2.0 does not override a more specific skill license.

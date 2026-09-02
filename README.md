@@ -2,12 +2,14 @@
 
 Composable Agent Skills for getting useful work done without turning every task into a giant framework.
 
+Current patch: **2.0.1** (`VERSION` is the release source of truth for shipped core skills).
+
 | Skill | Role | Use it for |
 | --- | --- | --- |
 | [`task-execution`](skills/task-execution/SKILL.md) | HOST | Any actionable request: implement, fix, review, investigate, refactor, plan, or verify |
-| [`design-pipeline`](skills/design-pipeline/SKILL.md) | DOMAIN | Material web UI/UX design, redesign, review, no-reference direction finding, and rendered visual verification |
+| [`design-pipeline`](skills/design-pipeline/SKILL.md) | DOMAIN | Material web UI/UX design, redesign, no-reference direction finding, and rendered visual verification |
 
-## Harness v2 model
+## Harness model
 
 ```text
 Product / project truth
@@ -22,42 +24,30 @@ ONE DOMAIN owner
 real evidence: runtime / browser / tests / DB / logs
 ```
 
-The goal is not maximum process. It is **minimum justified permanent surface + evidence strong enough to support the claim**.
+The goal is **minimum justified permanent surface + evidence strong enough to support the claim**.
 
-## What v2 is designed to prevent
-
-- false completion from green build/lint/test output;
-- test-count/coverage-count optimization;
-- unnecessary files, wrappers, helpers, abstractions, and compatibility debris;
-- temporary probes/debug artifacts being left in the repository;
-- old implementation/tests/config surviving after a replacement when nothing consumes them;
-- material UI being self-certified without rendered evidence;
-- production CSS becoming the place where an agent discovers the visual direction;
-- several design providers steering the same build pass at once;
-- endless audit loops after the finite current target is already closed.
+Harness v2 is designed to resist false completion, test-count optimization, unnecessary files/abstractions, dead residue, self-certified UI, production-code design exploration without a direction, provider stacking, and endless audit loops.
 
 ## Test and cleanup discipline
 
 `task-execution` distinguishes:
 
-- **TEMPORARY PROBE** — diagnostic/reproduction evidence for the current task; normally removed before completion;
-- **DURABLE REGRESSION TEST** — protects a stable contract/invariant and has a clear counterfactual fault it catches.
+- **TEMPORARY PROBE** — diagnostic/reproduction evidence; normally removed before completion;
+- **DURABLE REGRESSION TEST** — protects a stable contract/invariant and has a clear counterfactual.
 
-A new test is not automatically valuable because a bug was fixed. Prefer the strongest existing verifier before adding another one. Avoid tests that merely freeze mutable DOM/CSS/theme/file topology, mocks, or implementation details a legitimate refactor should be free to change.
+A bug fix does not automatically justify another permanent test. Prefer the strongest existing verifier and delete superseded implementation/tests/config after a replacement when nothing still consumes them.
 
 See [`cleanup-and-tests.md`](skills/task-execution/references/cleanup-and-tests.md).
 
-## Design without a user-provided reference
+## Design without a reference
 
-When material UI work has no strong reference and design authority is weak/incomplete, `design-pipeline` does not immediately patch production CSS.
-
-It first creates/selects a concrete design direction:
+When material UI work has no strong reference and design authority is weak/incomplete:
 
 ```text
 product truth
 → focused reference research when useful
 → 2–4 materially different Design DNAs
-→ concrete mockups/scratch renders when practical
+→ concrete scratch/mockup renders when practical
 → compare product fit / UX / craft / originality / implementation fit
 → select one direction
 → production build
@@ -67,120 +57,83 @@ product truth
 
 See [`direction.md`](skills/design-pipeline/references/direction.md).
 
-Use at most one primary craft approach/provider per build pass. A different provider may serve as a fresh critic only when it adds a materially different evaluation capability; it should not co-build an averaged design doctrine.
-
-## Completion is scope-aware
-
-```text
-TASK COMPLETE
-SLICE COMPLETE
-FEATURE COMPLETE
-MILESTONE COMPLETE
-RELEASE READY
-```
-
-`STOP` means the current target has no remaining Required work.
-
-`SHIP` is reserved for an explicitly evaluated RELEASE target that is actually release-ready. Local success never implies product/release readiness.
+Use at most one primary craft approach per build pass. Another provider may be a fresh critic, not a co-builder.
 
 ## Install
+
+Global/user install when you want reusable skills:
 
 ```bash
 npx skills add Nishef1/ai-pipelines -s task-execution
 npx skills add Nishef1/ai-pipelines -s design-pipeline
 ```
 
-Install only the skills the project actually needs.
+For projects where deterministic availability matters, keep repo-scoped copies under `.agents/skills/` and pin their upstream release/commit. Comoira is an example of this pattern.
 
 ## Bootstrap instructions
 
-Ready-to-copy concise instruction files live under [`instructions/`](instructions/):
+Ready-to-copy bootstrap files:
 
-- [`codex-global.md`](instructions/codex-global.md) — global Codex bootstrap;
-- [`chatgpt-project.md`](instructions/chatgpt-project.md) — ChatGPT Project operating instructions.
+- [`instructions/codex-global.md`](instructions/codex-global.md)
+- [`instructions/chatgpt-project.md`](instructions/chatgpt-project.md)
 
-These files intentionally route work into the HOST/DOMAIN skills instead of duplicating their whole protocols.
+They intentionally route into HOST/DOMAIN skills instead of duplicating the full protocols.
 
-## Evaluation
+## Executable evaluation
 
-Routing fixtures answer **which capability should activate**, not whether output quality improved.
+Static fixture/version checks:
 
-Current evals include:
+```bash
+python scripts/harness_eval.py check
+```
 
-- `evals/task-execution/routing-cases.json`;
-- `evals/task-execution/completion-cases.json`;
-- `evals/design-pipeline/routing-cases.json`;
-- `evals/harness-v2/composition-cases.json`.
+Reviewed optional-provider drift:
 
-Harness quality claims should use repeated baseline-vs-candidate runs on representative real tasks. Evaluate dimensions separately, for example:
+```bash
+python scripts/harness_eval.py provider-drift
+```
 
-- behavioral/task success;
-- false-completion rate;
-- human corrections required;
-- unnecessary permanent files/code/tests;
-- dead/obsolete residue;
-- functional/accessibility/responsive regressions;
-- UI pairwise preference and direction/reference fidelity;
-- tool calls, latency/cost, and variance.
+Real baseline-vs-candidate outcome summaries:
 
-Do not use one global quality score or an aesthetic CI gate.
+```bash
+python scripts/harness_eval.py outcomes path/to/real-runs.json
+```
+
+The evaluator does **not** call a model or fabricate outcome data. Representative task runs must come from the actual agent/harness environment being compared. See [`evals/harness-v2/README.md`](evals/harness-v2/README.md) and [`outcome-runs.example.json`](evals/harness-v2/outcome-runs.example.json).
+
+Evaluate dimensions separately: task success, false completion, user corrections, unnecessary permanent files/tests, residue, regressions, UI pairwise preference/fidelity, latency/cost, and variance. Do not reduce them to one universal score.
 
 ## Principles
 
-- **One HOST.** `task-execution` owns one finite current target.
+- **One HOST.** One finite current target.
 - **Domain ownership.** Specialty skills define what good looks like; they do not replace the HOST.
-- **Progressive disclosure.** Core `SKILL.md` stays small enough to activate; conditional detail belongs in `references/`.
-- **Evidence over self-report.** Exit 0, a generated PASS string, or a closed issue is not semantic proof by itself.
-- **No provider stacking by default.** More agents/skills/providers are not automatically better.
+- **Progressive disclosure.** Core skills stay cheap enough to activate; conditional detail lives in references.
+- **Evidence over self-report.** Exit 0 or generated PASS text is not semantic proof by itself.
+- **No provider stacking by default.**
 - **No false progress.** Permanent complexity must trace to a real requirement.
-- **Cleanup is part of completion.** Exploration and superseded paths should not silently accumulate.
-- **Ablate harness rules.** If a rule adds context/cost but repeated outcomes do not worsen when it is removed, simplify or delete it.
+- **Cleanup is completion work.**
+- **Ablate harness rules.** If a rule adds cost/context without repeatable outcome lift, simplify or remove it.
 
-## Repository layout
+## Layout
 
 ```text
 ai-pipelines/
+├── VERSION
 ├── AGENTS.md
 ├── README.md
 ├── instructions/
-│   ├── chatgpt-project.md
-│   └── codex-global.md
+├── scripts/
+│   └── harness_eval.py
 ├── evals/
 │   ├── harness-v2/
-│   │   └── composition-cases.json
 │   ├── task-execution/
 │   └── design-pipeline/
 └── skills/
     ├── task-execution/
-    │   ├── SKILL.md
-    │   ├── agents/openai.yaml
-    │   └── references/
     └── design-pipeline/
-        ├── SKILL.md
-        ├── agents/openai.yaml
-        └── references/
 ```
 
-## External control systems
-
-This repository does not ship its own project tracker, roadmap database, spec framework, or scheduler.
-
-```text
-Product truth     → what belongs / why
-Work control      → accepted work / dependencies / assignment
-Scheduler         → dispatch / retry / concurrency
-Task Execution    → close the selected target
-Domain skills     → specialty quality
-Evidence          → prove actual behavior
-```
-
-Prefer thin adapters over embedding another provider's project-management model inside the HOST.
-
-## Adding another pipeline
-
-Add a new skill only when it owns a distinct reusable concern. Assign one primary role: `HOST`, `DOMAIN`, `EVIDENCE`, `ADAPTER`, or `AUDITOR`. Define positive/negative activation, composition boundaries, and representative eval cases. Do not create a second source of truth for project state, work priority, or scheduling.
-
-See [`AGENTS.md`](AGENTS.md) for repository maintenance rules.
+This repository does not ship a project tracker, shadow roadmap, scheduler, or universal design doctrine.
 
 ## License
 

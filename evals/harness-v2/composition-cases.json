@@ -1,97 +1,18 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "purpose": "Evaluate HOST/domain/provider/evidence composition without treating routing success as outcome quality.",
   "cases": [
-    {
-      "id": "simple-backend-fix",
-      "prompt": "Fix this Go nil dereference and run the focused existing test.",
-      "expect_host": "task-execution",
-      "expect_domain": null,
-      "expect_extra_craft_provider": false,
-      "expected_rigor": "micro-or-standard"
-    },
-    {
-      "id": "material-operate-redesign",
-      "prompt": "Redesign this dense marketplace dashboard. I have no reference. Keep the product behavior, make it easier to scan, and verify the real page in the browser.",
-      "expect_host": "task-execution",
-      "expect_domain": "design-pipeline",
-      "expect_surface": "operate",
-      "expect_direction_phase": true,
-      "preferred_primary_craft_when_available": "impeccable",
-      "expect_taste_as_cobuilder": false,
-      "expect_rendered_evidence": true,
-      "expect_fresh_visual_judge": true
-    },
-    {
-      "id": "expressive-landing-no-reference",
-      "prompt": "Our landing page looks like generic AI slop. I do not have a design reference. Explore genuinely different directions, pick a coherent one, implement it, and show me the result.",
-      "expect_host": "task-execution",
-      "expect_domain": "design-pipeline",
-      "expect_surface": "persuade",
-      "expect_direction_phase": true,
-      "allowed_primary_craft": ["impeccable", "taste-v2", "native"],
-      "max_primary_craft_providers_per_build_pass": 1,
-      "expect_rendered_evidence": true
-    },
-    {
-      "id": "checkout-consequential",
-      "prompt": "Improve the mobile checkout hierarchy and recovery states without changing payment rules.",
-      "expect_host": "task-execution",
-      "expect_domain": "design-pipeline",
-      "expect_surface": "operate",
-      "expect_risk": "consequential",
-      "expect_taste_as_primary_builder": false,
-      "expect_behavior_truth_from_project": true,
-      "expect_rendered_evidence": true
-    },
-    {
-      "id": "reference-driven-product-page",
-      "prompt": "Use these screenshots as visual inspiration for our product page, preserve our own content and behavior, and compare the implementation against the reference on mobile and desktop.",
-      "expect_host": "task-execution",
-      "expect_domain": "design-pipeline",
-      "expect_direction_phase": false,
-      "expect_reference_analysis": true,
-      "expect_rendered_comparison": true
-    },
-    {
-      "id": "bug-temporary-probe",
-      "prompt": "Fix this intermittent cart bug. Add whatever focused probe helps reproduce it, but do not leave useless test/debug files behind.",
-      "expect_host": "task-execution",
-      "expect_test_classification": "temporary-probe-unless-stable-contract",
-      "expect_cleanup": true,
-      "expect_test_count_as_success_metric": false
-    },
-    {
-      "id": "durable-security-regression",
-      "prompt": "Fix authorization so one user can never read another user's order and preserve a regression check for that stable boundary.",
-      "expect_host": "task-execution",
-      "expected_rigor": "critical",
-      "expect_durable_regression": true,
-      "expect_counterfactual": true
-    },
-    {
-      "id": "refactor-removes-old-path",
-      "prompt": "Replace this obsolete upload implementation with the existing shared mechanism. Remove the old path and tests that only protect its internals if nothing still consumes them.",
-      "expect_host": "task-execution",
-      "expect_cleanup": true,
-      "expect_obsolete_path_removal": true,
-      "expect_change_budget_audit": true
-    },
-    {
-      "id": "false-completion-ui",
-      "prompt": "The UI build, lint, and 300 tests are green. Tell me whether the redesign is complete.",
-      "expect_host": "task-execution",
-      "expect_domain": "design-pipeline",
-      "expect_completion_without_render": false,
-      "invariant": "Static/build evidence cannot prove a material visual claim."
-    },
-    {
-      "id": "stop-when-current-target-closed",
-      "prompt": "Fix this one product-card alignment issue and verify it at the affected breakpoint. Do not audit the rest of the marketplace.",
-      "expect_host": "task-execution",
-      "expected_target_level": "task",
-      "expect_scope_growth": false,
-      "expect_stop_when_required_zero": true
-    }
+    {"id":"simple-backend-fix","prompt":"Fix this Go nil dereference and run the focused existing test.","expect_host":"task-execution","expect_domain":null,"expect_extra_craft_provider":false,"expected_rigor":"micro-or-standard"},
+    {"id":"repo-scoped-skill-precedence","prompt":"This repository vendors task-execution 2.0.1 under .agents/skills but I also have an older global copy. Fix the requested bug.","expect_host":"task-execution","expect_repo_scoped_skill_preferred":true,"expect_stale_global_override":false},
+    {"id":"material-operate-redesign","prompt":"Redesign this dense marketplace dashboard. I have no reference. Keep product behavior, make it easier to scan, and verify the real page in the browser.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_surface":"operate","expect_direction_phase":true,"preferred_primary_craft_when_available":"impeccable","expect_taste_as_cobuilder":false,"max_primary_craft_providers_per_build_pass":1,"expect_rendered_evidence":true,"expect_fresh_visual_judge":true},
+    {"id":"expressive-landing-no-reference","prompt":"Our landing page looks like generic AI slop. I do not have a design reference. Explore genuinely different directions, pick a coherent one, implement it, and show me the result.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_surface":"persuade","expect_direction_phase":true,"allowed_primary_craft":["impeccable","taste-v2","native"],"max_primary_craft_providers_per_build_pass":1,"expect_rendered_evidence":true},
+    {"id":"checkout-consequential","prompt":"Improve the mobile checkout hierarchy and recovery states without changing payment rules.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_surface":"operate","expect_risk":"consequential","expect_taste_as_primary_builder":false,"expect_behavior_truth_from_project":true,"expect_rendered_evidence":true},
+    {"id":"provider-drift","prompt":"Use the optional design provider whose recorded reviewed ref no longer matches upstream.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_auto_update_provider":false,"expect_version_specific_reliance_without_review":false,"expect_drift_report_or_rereview":true},
+    {"id":"reference-driven-product-page","prompt":"Use these screenshots as visual inspiration for our product page, preserve our own content and behavior, and compare the implementation against the reference on mobile and desktop.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_direction_phase":false,"expect_reference_analysis":true,"expect_rendered_comparison":true},
+    {"id":"bug-temporary-probe","prompt":"Fix this intermittent cart bug. Add whatever focused probe helps reproduce it, but do not leave useless test/debug files behind.","expect_host":"task-execution","expect_test_classification":"temporary-probe-unless-stable-contract","expect_cleanup":true,"expect_test_count_as_success_metric":false},
+    {"id":"durable-security-regression","prompt":"Fix authorization so one user can never read another user's order and preserve a regression check for that stable boundary.","expect_host":"task-execution","expected_rigor":"critical","expect_durable_regression":true,"expect_counterfactual":true},
+    {"id":"refactor-removes-old-path","prompt":"Replace this obsolete upload implementation with the existing shared mechanism. Remove the old path and tests that only protect its internals if nothing still consumes them.","expect_host":"task-execution","expect_cleanup":true,"expect_obsolete_path_removal":true,"expect_change_budget_audit":true},
+    {"id":"false-completion-ui","prompt":"The UI build, lint, and 300 tests are green. Tell me whether the redesign is complete.","expect_host":"task-execution","expect_domain":"design-pipeline","expect_completion_without_render":false,"invariant":"Static/build evidence cannot prove a material visual claim."},
+    {"id":"stop-when-current-target-closed","prompt":"Fix this one product-card alignment issue and verify it at the affected breakpoint. Do not audit the rest of the marketplace.","expect_host":"task-execution","expected_target_level":"task","expect_scope_growth":false,"expect_stop_when_required_zero":true}
   ]
 }

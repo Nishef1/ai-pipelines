@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "runs": [
+    {
+      "task_id": "comoira-product-card-redesign",
+      "variant": "baseline",
+      "success": false,
+      "false_completion": true,
+      "user_corrections": 2,
+      "unnecessary_files": 1,
+      "unnecessary_tests": 4,
+      "residue_items": 2,
+      "latency_seconds": 900,
+      "cost": 0,
+      "ui_preference": "candidate",
+      "notes": "Example shape only; replace with real run evidence."
+    },
+    {
+      "task_id": "comoira-product-card-redesign",
+      "variant": "candidate",
+      "success": true,
+      "false_completion": false,
+      "user_corrections": 0,
+      "unnecessary_files": 0,
+      "unnecessary_tests": 0,
+      "residue_items": 0,
+      "latency_seconds": 1100,
+      "cost": 0,
+      "ui_preference": "candidate",
+      "notes": "Example shape only; replace with real run evidence."
+    }
+  ]
+}

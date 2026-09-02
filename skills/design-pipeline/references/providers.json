@@ -1,12 +1,14 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "reviewed_at": "2026-09-02",
   "policy": {
     "auto_install": false,
+    "auto_update": false,
     "default_max_primary_craft_providers_per_build_pass": 1,
     "default_max_primary_evidence_providers_per_verification_pass": 1,
     "secondary_critic": "allowed-only-as-fresh-evaluator-not-co-builder",
-    "unknown_or_drifted_provider": "re-review-before-relying-on-version-specific-behavior"
+    "unknown_or_drifted_provider": "re-review-before-relying-on-version-specific-behavior",
+    "drift_check": "python scripts/harness_eval.py provider-drift"
   },
   "providers": {
     "impeccable": {
@@ -14,47 +16,21 @@
       "kind": ["craft", "critique", "direction"],
       "source": "https://github.com/pbakaus/impeccable",
       "license": "Apache-2.0",
-      "reviewed_release": "skill-v4.0.4",
-      "reviewed_ref": "bd2535974861db28a9f4a18ec78608488cd868dd",
-      "best_for": [
-        "material product UI redesign",
-        "Operate surfaces where craft must preserve task clarity",
-        "new visual direction with project context",
-        "finishing critique"
-      ],
-      "avoid_or_gate_when": [
-        "the task is trivial or backend-only",
-        "the provider would introduce a competing product/design source of truth",
-        "another primary craft provider is already building the same pass"
-      ],
-      "notes": [
-        "Prefer for substantial Operate/product UI when available and compatible.",
-        "Project product/design truth outranks provider defaults."
-      ]
+      "reviewed_release": "4.1.3",
+      "reviewed_ref": "a26419917716b16623cc830429f3cc1a4f7cd630",
+      "best_for": ["material product UI redesign", "Operate surfaces where craft must preserve task clarity", "new visual direction with project context", "finishing critique"],
+      "avoid_or_gate_when": ["the task is trivial or backend-only", "the provider would introduce a competing product/design source of truth", "another primary craft provider is already building the same pass"],
+      "notes": ["Prefer for substantial Operate/product UI when available and compatible.", "Current reviewed core explicitly distinguishes Persuade/Operate/Read/Experience and bounded verification.", "Project product/design truth outranks provider defaults."]
     },
     "taste-v2": {
       "status": "experimental-optional",
       "kind": ["craft", "creative-pressure", "critic"],
       "source": "https://github.com/Leonxlnx/taste-skill",
       "license": "MIT",
-      "reviewed_ref": "e988add20dab0fa97d7a76781c48961c8184288e",
-      "best_for": [
-        "Persuade surfaces needing anti-default exploration",
-        "portfolios/showcases",
-        "expressive visual-direction generation",
-        "fresh anti-slop critique after a different builder pass"
-      ],
-      "avoid_or_gate_when": [
-        "dashboards",
-        "data tables",
-        "multi-step operational workflows",
-        "consequential checkout/auth/payment UI",
-        "its stylistic defaults conflict with accepted project direction"
-      ],
-      "notes": [
-        "Use as the primary craft approach OR as a fresh critic; do not blend it with another builder doctrine in the same build pass.",
-        "Do not inherit style dials or stack preferences as universal project rules."
-      ]
+      "reviewed_ref": "ccbc15639c97057cbfcf32ecebc38ef716e4bb37",
+      "best_for": ["Persuade surfaces needing anti-default exploration", "portfolios/showcases", "expressive visual-direction generation", "fresh anti-slop critique after a different builder pass"],
+      "avoid_or_gate_when": ["dashboards", "data tables", "multi-step operational workflows", "consequential checkout/auth/payment UI", "its prescriptive AIDA/GSAP/font/layout rules conflict with accepted project direction"],
+      "notes": ["The reviewed gpt-taste skill is intentionally highly prescriptive; use only as a bounded creative-pressure source.", "Use as the primary craft approach OR as a fresh critic; never blend it with another builder doctrine in the same pass.", "Do not inherit its randomization, GSAP, font, spacing, or layout mandates as universal project rules."]
     },
     "ads-mcp": {
       "status": "supported-optional",
@@ -63,18 +39,11 @@
       "license": "MIT",
       "package": "ads-mcp",
       "reviewed_package_version": "0.3.0",
-      "reviewed_repo_release": "v1.3.1",
-      "reviewed_ref": "77ad47a1730fbe680a81744aec71125e03dd8805",
+      "reviewed_ref": "e7a8650ecdce68fefd46ea8e08d25f46339d9110",
       "runtime": "node>=20",
-      "best_for": [
-        "rendered state and viewport capture",
-        "deterministic accessibility/layout evidence",
-        "structured evaluation receipts"
-      ],
-      "avoid_or_gate_when": [
-        "the project already has sufficient reproducible browser evidence",
-        "setup cost outweighs value for a small task"
-      ]
+      "best_for": ["rendered state and viewport capture", "deterministic accessibility/layout evidence", "structured evaluation receipts"],
+      "avoid_or_gate_when": ["the project already has sufficient reproducible browser evidence", "setup cost outweighs value for a small task"],
+      "notes": ["Current reviewed head blocks completion on unverified required modal interactions.", "Prefer the project's existing browser harness when it already covers the claim."]
     },
     "storybook": {
       "status": "project-local-evidence-source",
@@ -92,22 +61,17 @@
       "license": "service-specific",
       "version_policy": "current-official-service-contract",
       "best_for": ["Figma variables/components", "design-to-code grounding when Figma is already authoritative"],
-      "avoid_or_gate_when": [
-        "Figma is not part of the project workflow",
-        "the task can be grounded from canonical code/runtime sources"
-      ]
+      "avoid_or_gate_when": ["Figma is not part of the project workflow", "the task can be grounded from canonical code/runtime sources"]
     },
     "stitch-skills": {
       "status": "experimental",
       "kind": ["visual-exploration", "design-source"],
       "source": "https://github.com/google-labs-code/stitch-skills",
       "license": "Apache-2.0",
-      "reviewed_ref": "535b0889a46868c9b08f8a7f7084db3c1958a2b6",
+      "reviewed_ref": "0337446dadde6f8c94210444e2aa9d546126480f",
       "best_for": ["visual exploration", "design variants when Stitch is already available"],
-      "avoid_or_gate_when": [
-        "the workflow would become dependent on an unavailable service",
-        "another visual exploration provider already covers the task"
-      ]
+      "avoid_or_gate_when": ["the workflow would become dependent on an unavailable service", "another visual exploration provider already covers the task"],
+      "notes": ["The reviewed drift from the prior ref added SITE.md utility support; it did not justify making Stitch a default dependency."]
     },
     "google-design-md": {
       "status": "project-memory-format-when-adopted",
@@ -116,46 +80,18 @@
       "license": "Apache-2.0",
       "reviewed_release": "0.2.0",
       "best_for": ["durable project-specific visual identity and design intent"],
-      "avoid_or_gate_when": [
-        "using it as pipeline configuration",
-        "duplicating canonical token/product truth"
-      ]
+      "avoid_or_gate_when": ["using it as pipeline configuration", "duplicating canonical token/product truth"]
     }
   },
   "influences_not_routed": {
-    "hallmark": {
-      "source": "https://www.usehallmark.com/",
-      "reason": "Useful macrostructure-first and design-DNA/reference-study ideas. Its stylistic heuristics are not universal project truth, so the principles are internalized in direction.md rather than making Hallmark mandatory."
-    },
-    "gstack-design-shotgun": {
-      "source": "https://github.com/garrytan/gstack",
-      "reason": "Useful concrete-variant comparison and selection workflow. The full gstack skill stack is too broad/opinionated to become a default dependency; Design Pipeline adopts lightweight divergence-before-production instead."
-    },
-    "gpt-taste": {
-      "reason": "Aggressive anti-default design influence. The reviewed taste-v2 provider is the routable experimental form; generic gpt-taste doctrine is not loaded as a second simultaneous builder."
-    },
-    "codebuff-evalbuff": {
-      "source": "https://github.com/CodebuffAI/evalbuff",
-      "reason": "Useful influence for baseline-vs-harness outcome evaluation and ablation. Harness evaluation belongs in evals/, not inside the design runtime protocol."
-    },
-    "anthropic-generator-evaluator": {
-      "source": "https://www.anthropic.com/engineering/harness-design-long-running-apps",
-      "reason": "Useful evidence for separating generation from fresh evaluation on tasks near the model's capability boundary, while avoiding evaluator overhead on trivial work."
-    },
-    "ui-craft": {
-      "reason": "Useful craft-system reference, but its opinionated doctrine/global scoring is not core."
-    },
-    "emil-kowalski-skills": {
-      "source": "https://github.com/emilkowalski/skills",
-      "reason": "Useful motion purpose/frequency/interruption/reduced-motion guidance; numeric recipes are not universal rules."
-    },
-    "garden-skills": {
-      "source": "https://github.com/ConardLi/garden-skills",
-      "reason": "Useful grounding and design-context ideas; mandatory checkpoints/recipes are too workflow-heavy."
-    },
-    "tastemaker": {
-      "source": "https://github.com/codeswithroh/tastemaker",
-      "reason": "Useful real-pixel grounding and continuity concepts; competing memory system and large gate set are not adopted."
-    }
+    "hallmark": {"source": "https://www.usehallmark.com/", "reason": "Useful macrostructure-first and design-DNA/reference-study ideas. Its stylistic heuristics are not universal project truth; direction.md internalizes the useful principle."},
+    "gstack-design-shotgun": {"source": "https://github.com/garrytan/gstack", "reason": "Useful concrete-variant comparison and selection workflow. The full stack is too broad/opinionated to become a default dependency."},
+    "gpt-taste": {"source": "https://github.com/Leonxlnx/taste-skill", "reason": "Aggressive anti-default influence. The routable taste-v2 entry is bounded; generic doctrine is not loaded as a second simultaneous builder."},
+    "codebuff-evalbuff": {"source": "https://github.com/CodebuffAI/evalbuff", "reason": "Useful influence for baseline-vs-candidate outcome evaluation and ablation. Harness evaluation belongs in evals/, not the runtime protocol."},
+    "anthropic-generator-evaluator": {"source": "https://www.anthropic.com/engineering/harness-design-long-running-apps", "reason": "Supports fresh evaluator separation near capability/subjective boundaries while showing evaluator overhead can be unnecessary on simpler work."},
+    "ui-craft": {"reason": "Useful craft-system reference, but its opinionated doctrine/global scoring is not core."},
+    "emil-kowalski-skills": {"source": "https://github.com/emilkowalski/skills", "reason": "Useful motion-purpose/frequency/interruption/reduced-motion guidance; numeric recipes are not universal rules."},
+    "garden-skills": {"source": "https://github.com/ConardLi/garden-skills", "reason": "Useful grounding/design-context ideas; mandatory checkpoints/recipes are too workflow-heavy."},
+    "tastemaker": {"source": "https://github.com/codeswithroh/tastemaker", "reason": "Useful real-pixel grounding/continuity concepts; competing memory system and large gate set are not adopted."}
   }
 }

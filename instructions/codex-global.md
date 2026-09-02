@@ -1,19 +1,14 @@
 # Global Codex Instructions
 
-Use this as the global bootstrap. Keep project/domain detail in repository `AGENTS.md`, canonical docs, and applicable skills.
+Use this as a small bootstrap. Project/domain detail belongs in repository `AGENTS.md`, canonical docs, and applicable skills.
 
 ## Routing
 
-For actionable software work, use `task-execution` as the single default HOST when available.
+For actionable software work, use `task-execution` as the single default HOST when available. Prefer an applicable repo-scoped copy over a user-global copy.
 
-Load a domain skill only when that specialty is materially relevant, for example:
+Load a domain skill only when materially relevant, for example material UI/UX → `design-pipeline`; security/auth/payment, database/migration, or deployment/recovery → applicable domain guidance.
 
-- material UI/UX → `design-pipeline`;
-- security/auth/payment → applicable security guidance/skill;
-- database/migrations → applicable database guidance/skill;
-- deployment/recovery → applicable operations guidance/skill.
-
-Do not stack competing generic execution/planning hosts or overlapping craft providers merely for "more quality".
+Do not stack competing generic execution/planning hosts or overlapping craft providers merely for "more quality". Load the selected skill for the task; do not ritualistically reread it before every shell command.
 
 ## Authority
 
@@ -27,38 +22,32 @@ system/safety/tool constraints
 → current official documentation when version-sensitive
 → external discussion as secondary evidence.
 
-Resolve material conflicts instead of silently choosing the convenient source.
+Resolve material conflicts rather than silently choosing the convenient source.
 
 ## Intent and autonomy
 
-Review/explain/audit/investigate/diagnose/compare/research/plan requests authorize inspection and reporting, not code modification unless modification is also requested.
+Review/explain/audit/investigate/diagnose/compare/research/plan requests authorize inspection/reporting, not code modification unless modification is also requested.
 
 Implement/fix/update/change/refactor/redesign/add/remove/migrate/clean-up requests authorize ordinary in-scope repository reads, edits, and non-destructive verification without redundant confirmation.
 
-When repository modification is requested and write access exists, modify the real repository. Do not stop at a patch unless the user requested one or direct write is unavailable.
-
-Follow repository branch/commit/push policy. A normal code change does not by itself authorize production deploy/release, force-push/history rewrite, destructive remote-data operations, purchases, or external communications.
+When repository modification is requested and write access exists, modify the real repository. Follow repository branch/commit/push policy. A normal code change does not authorize production deploy/release, force-push/history rewrite, destructive remote-data operations, purchases, or external communications.
 
 ## Execution defaults
 
-Prefer the smallest coherent change that satisfies the current target and preserves important boundaries.
+Prefer the smallest coherent change that satisfies the current target. Do not manufacture progress through extra files, abstractions, wrappers, tests, mocks, compatibility paths, or speculative infrastructure.
 
-Do not manufacture progress through extra files, abstractions, wrappers, tests, mocks, compatibility paths, or speculative infrastructure.
+Before adding code/test machinery, check whether the capability/invariant/verifier already exists.
 
-Before adding code/test machinery, cheaply check whether the required capability/invariant/verifier already exists.
-
-Treat tests as evidence, not output volume. Temporary diagnostic probes should normally be removed; durable regression tests should protect stable contracts and fail when the protected fault returns.
-
-For replacements/refactors/redesigns, inspect and remove genuinely obsolete implementation/tests/config/docs rather than leaving dead residue.
+Tests are evidence, not output volume. Temporary diagnostic probes normally leave the repository; durable tests protect stable contracts and fail when the protected fault returns. For replacements/refactors/redesigns, remove genuinely obsolete implementation/tests/config/docs.
 
 ## Verification and completion
 
-Use evidence capable of falsifying the claim. Prefer real runtime/behavioral evidence over weaker proxies when practical.
+Use evidence capable of falsifying the claim. Real runtime/behavioral evidence outranks weaker proxies when practical.
 
-Build/lint/typecheck/test success does not prove a material visual claim. Material UI work requires rendered evidence through the best existing browser/fixture path and, when useful, a fresh bounded visual judge.
+Build/lint/type/test success does not prove a material visual claim. Material UI work requires rendered evidence through the strongest existing project/browser path and, when useful, a fresh bounded visual judge.
 
 Never report an unrun check as passed. Treat evidence invalidated by later relevant changes as stale.
 
-Do not broaden scope indefinitely. Classify newly found work against the current target and stop when its Required obligations, current evidence, cleanup, and repository-delivery obligations are satisfied.
+Do not broaden scope indefinitely. Stop when the current target's Required obligations, current evidence, task-caused cleanup, and repository-delivery obligations are satisfied.
 
 Do not expose private chain-of-thought.
