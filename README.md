@@ -1,44 +1,75 @@
 # AI Pipelines
 
-Composable Agent Skills for getting useful work done with AI agents without turning every task into a giant framework.
-
-The repository currently contains two layers:
+Composable Agent Skills for getting useful work done without turning every task into a giant framework.
 
 | Skill | Role | Use it for |
 | --- | --- | --- |
-| [`task-execution`](skills/task-execution/SKILL.md) | HOST execution harness | Any actionable request: plan, build, fix, review, investigate, refactor, write, or verify work |
-| [`design-pipeline`](skills/design-pipeline/SKILL.md) | DOMAIN UI/UX pipeline | Material web design, redesign, interface review, reference-grounded implementation, and rendered visual verification |
+| [`task-execution`](skills/task-execution/SKILL.md) | HOST | Any actionable request: implement, fix, review, investigate, refactor, plan, or verify |
+| [`design-pipeline`](skills/design-pipeline/SKILL.md) | DOMAIN | Material web UI/UX design, redesign, review, no-reference direction finding, and rendered visual verification |
 
-## Composition model
-
-The skills are designed to compose rather than compete.
+## Harness v2 model
 
 ```text
-Product / strategy authority
+Product / project truth
         ↓
 Work-control plane, when present
-priority / dependencies / assignment
+        ↓ selected current target
+ONE HOST: task-execution
+UNDERSTAND → PLAN → BUILD → JUDGE → CLEAN → BREAK when useful → STOP
+        ↓ only when a specialty is material
+ONE DOMAIN owner
         ↓
-task-execution
-Target Level / Current Target / Plan / Evidence / Stop
-        ↓ when a specialty is material
-Domain skill
-        ↓
-returns domain decisions + evidence
-        ↓
-task-execution
-current-target triage / completion
+real evidence: runtime / browser / tests / DB / logs
 ```
 
-For a material UI task, `task-execution` is the host execution layer and `design-pipeline` is the design authority. The host owns the finite target, planning closure, current-target evidence, target-relative triage, and stopping. The domain skill owns design classification, craft decisions, design-specific routing, and rendered visual evaluation.
+The goal is not maximum process. It is **minimum justified permanent surface + evidence strong enough to support the claim**.
 
-Project-wide strategy/priority, an authoritative issue graph, and external scheduling stay with the project/work-control system that owns them. `Ready` work is not automatically the highest-value product work.
+## What v2 is designed to prevent
 
-Neither skill requires the other to work. There is no shared runtime, daemon, MCP server, proprietary project-state format, or built-in tracker.
+- false completion from green build/lint/test output;
+- test-count/coverage-count optimization;
+- unnecessary files, wrappers, helpers, abstractions, and compatibility debris;
+- temporary probes/debug artifacts being left in the repository;
+- old implementation/tests/config surviving after a replacement when nothing consumes them;
+- material UI being self-certified without rendered evidence;
+- production CSS becoming the place where an agent discovers the visual direction;
+- several design providers steering the same build pass at once;
+- endless audit loops after the finite current target is already closed.
+
+## Test and cleanup discipline
+
+`task-execution` distinguishes:
+
+- **TEMPORARY PROBE** — diagnostic/reproduction evidence for the current task; normally removed before completion;
+- **DURABLE REGRESSION TEST** — protects a stable contract/invariant and has a clear counterfactual fault it catches.
+
+A new test is not automatically valuable because a bug was fixed. Prefer the strongest existing verifier before adding another one. Avoid tests that merely freeze mutable DOM/CSS/theme/file topology, mocks, or implementation details a legitimate refactor should be free to change.
+
+See [`cleanup-and-tests.md`](skills/task-execution/references/cleanup-and-tests.md).
+
+## Design without a user-provided reference
+
+When material UI work has no strong reference and design authority is weak/incomplete, `design-pipeline` does not immediately patch production CSS.
+
+It first creates/selects a concrete design direction:
+
+```text
+product truth
+→ focused reference research when useful
+→ 2–4 materially different Design DNAs
+→ concrete mockups/scratch renders when practical
+→ compare product fit / UX / craft / originality / implementation fit
+→ select one direction
+→ production build
+→ real rendered capture
+→ fresh bounded visual judge
+```
+
+See [`direction.md`](skills/design-pipeline/references/direction.md).
+
+Use at most one primary craft approach/provider per build pass. A different provider may serve as a fresh critic only when it adds a materially different evaluation capability; it should not co-build an averaged design doctrine.
 
 ## Completion is scope-aware
-
-`task-execution` deliberately separates completion levels:
 
 ```text
 TASK COMPLETE
@@ -48,74 +79,91 @@ MILESTONE COMPLETE
 RELEASE READY
 ```
 
-`STOP` means the current execution target has no remaining Required work. It can happen at any level.
+`STOP` means the current target has no remaining Required work.
 
-`SHIP` is reserved for an explicitly evaluated `RELEASE` target. Finishing a local task, slice, feature, or milestone must not be reported as product/release readiness.
-
-## Principles
-
-- **Small core, progressive disclosure.** `SKILL.md` contains activation and the durable protocol; deeper material lives in `references/`.
-- **One source of truth per concern.** Domain skills do not duplicate the host workloop, and the host does not pretend to be a product tracker or domain expert.
-- **One control plane per concern.** Avoid a shadow roadmap/state tracker and avoid two schedulers for the same work graph.
-- **Minimum useful process.** Simple work stays simple; rigor increases with ambiguity and consequence.
-- **Evidence over self-report.** A tool existing, a command exiting `0`, a closed ticket, or an agent saying `PASS` is not automatically proof.
-- **Finite targets.** Findings are triaged against the current target; optional improvement does not keep the loop alive forever.
-- **Scope-matched completion.** Local evidence cannot justify higher-level completion claims.
-- **No provider stacking by default.** External skills and tools are optional capabilities, not automatic authority.
-- **No silent scope growth.** Discovery can reveal work; it cannot silently promote every finding into a blocker.
-
-## Repository layout
-
-```text
-ai-pipelines/
-├── AGENTS.md
-├── LICENSE
-├── README.md
-├── evals/
-│   ├── design-pipeline/
-│   │   └── routing-cases.json
-│   └── task-execution/
-│       ├── routing-cases.json
-│       └── completion-cases.json
-└── skills/
-    ├── task-execution/
-    │   ├── SKILL.md
-    │   ├── agents/
-    │   │   └── openai.yaml
-    │   └── references/
-    │       ├── break.md
-    │       ├── control-plane.md
-    │       ├── discover.md
-    │       ├── evidence.md
-    │       ├── judge.md
-    │       └── project-compass.md
-    └── design-pipeline/
-        ├── SKILL.md
-        ├── agents/
-        │   └── openai.yaml
-        └── references/
-            ├── evaluation.md
-            ├── providers.json
-            ├── routing.md
-            └── trust.md
-```
+`SHIP` is reserved for an explicitly evaluated RELEASE target that is actually release-ready. Local success never implies product/release readiness.
 
 ## Install
-
-Install only the skills you want:
 
 ```bash
 npx skills add Nishef1/ai-pipelines -s task-execution
 npx skills add Nishef1/ai-pipelines -s design-pipeline
 ```
 
-For general project work, install `task-execution` first. Add `design-pipeline` when material UI/UX work is part of the project.
+Install only the skills the project actually needs.
 
-## Working with project control systems
+## Bootstrap instructions
 
-This repository does not ship its own issue tracker, project-state database, spec framework, or multi-agent scheduler.
+Ready-to-copy concise instruction files live under [`instructions/`](instructions/):
 
-If a project already uses one, integrate through its real capabilities and keep ownership clear:
+- [`codex-global.md`](instructions/codex-global.md) — global Codex bootstrap;
+- [`chatgpt-project.md`](instructions/chatgpt-project.md) — ChatGPT Project operating instructions.
+
+These files intentionally route work into the HOST/DOMAIN skills instead of duplicating their whole protocols.
+
+## Evaluation
+
+Routing fixtures answer **which capability should activate**, not whether output quality improved.
+
+Current evals include:
+
+- `evals/task-execution/routing-cases.json`;
+- `evals/task-execution/completion-cases.json`;
+- `evals/design-pipeline/routing-cases.json`;
+- `evals/harness-v2/composition-cases.json`.
+
+Harness quality claims should use repeated baseline-vs-candidate runs on representative real tasks. Evaluate dimensions separately, for example:
+
+- behavioral/task success;
+- false-completion rate;
+- human corrections required;
+- unnecessary permanent files/code/tests;
+- dead/obsolete residue;
+- functional/accessibility/responsive regressions;
+- UI pairwise preference and direction/reference fidelity;
+- tool calls, latency/cost, and variance.
+
+Do not use one global quality score or an aesthetic CI gate.
+
+## Principles
+
+- **One HOST.** `task-execution` owns one finite current target.
+- **Domain ownership.** Specialty skills define what good looks like; they do not replace the HOST.
+- **Progressive disclosure.** Core `SKILL.md` stays small enough to activate; conditional detail belongs in `references/`.
+- **Evidence over self-report.** Exit 0, a generated PASS string, or a closed issue is not semantic proof by itself.
+- **No provider stacking by default.** More agents/skills/providers are not automatically better.
+- **No false progress.** Permanent complexity must trace to a real requirement.
+- **Cleanup is part of completion.** Exploration and superseded paths should not silently accumulate.
+- **Ablate harness rules.** If a rule adds context/cost but repeated outcomes do not worsen when it is removed, simplify or delete it.
+
+## Repository layout
+
+```text
+ai-pipelines/
+├── AGENTS.md
+├── README.md
+├── instructions/
+│   ├── chatgpt-project.md
+│   └── codex-global.md
+├── evals/
+│   ├── harness-v2/
+│   │   └── composition-cases.json
+│   ├── task-execution/
+│   └── design-pipeline/
+└── skills/
+    ├── task-execution/
+    │   ├── SKILL.md
+    │   ├── agents/openai.yaml
+    │   └── references/
+    └── design-pipeline/
+        ├── SKILL.md
+        ├── agents/openai.yaml
+        └── references/
+```
+
+## External control systems
+
+This repository does not ship its own project tracker, roadmap database, spec framework, or scheduler.
 
 ```text
 Product truth     → what belongs / why
@@ -126,30 +174,14 @@ Domain skills     → specialty quality
 Evidence          → prove actual behavior
 ```
 
-Prefer thin provider adapters over embedding provider-specific project-management behavior in `task-execution`.
-
-## Evaluation
-
-`evals/<skill>/routing-cases.json` contains activation/routing cases. These files are test corpora for skill selection and classification; they are not aesthetic CI gates and do not prove that a pipeline improves model quality.
-
-`evals/task-execution/completion-cases.json` captures scope/completion invariants such as “task complete does not mean ship” and external-control-plane boundaries. It is a semantic fixture, not a release-readiness engine.
-
-Quality claims should be evaluated separately with repeated baseline-vs-skill runs on real tasks, using outcome-specific evidence rather than one global score.
+Prefer thin adapters over embedding another provider's project-management model inside the HOST.
 
 ## Adding another pipeline
 
-A new skill belongs here only when it owns a distinct, reusable concern. Before adding one:
+Add a new skill only when it owns a distinct reusable concern. Assign one primary role: `HOST`, `DOMAIN`, `EVIDENCE`, `ADAPTER`, or `AUDITOR`. Define positive/negative activation, composition boundaries, and representative eval cases. Do not create a second source of truth for project state, work priority, or scheduling.
 
-1. prove the concern is not already owned by an existing skill or reference;
-2. assign a primary role: `HOST`, `DOMAIN`, `EVIDENCE`, `ADAPTER`, or `AUDITOR`;
-3. define when it should and should not activate;
-4. keep its rules independent of model/provider churn where practical;
-5. add positive and negative routing/semantic cases where appropriate;
-6. make composition boundaries explicit;
-7. avoid introducing a second source of truth for project state, work priority, or scheduling.
-
-See [`AGENTS.md`](AGENTS.md) for repository-level maintenance rules.
+See [`AGENTS.md`](AGENTS.md) for repository maintenance rules.
 
 ## License
 
-Repository scaffolding and `design-pipeline` are Apache-2.0. Individual skills may declare a different license in their own frontmatter; `task-execution` is MIT.
+Repository scaffolding and `design-pipeline` are Apache-2.0. Individual skills may declare a more specific license; `task-execution` is MIT.
