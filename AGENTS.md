@@ -1,104 +1,140 @@
 # Repository Instructions
 
-This repository is a small collection of composable Agent Skills. Keep it small, explicit, and easy to reason about.
+This repository contains small composable Agent Skills. Keep the always-loaded layer lean and move conditional detail into references.
 
 ## Structure
 
-Each skill owns one directory under `skills/<name>/`:
+Each skill owns `skills/<name>/`:
 
-- `SKILL.md` — activation boundary and durable core protocol.
-- `references/` — deeper material loaded only when needed.
-- `agents/` — harness-facing metadata such as OpenAI skill UI metadata.
+- `SKILL.md` — activation boundary + durable core protocol;
+- `references/` — conditional deeper guidance;
+- `agents/` — harness-facing metadata.
 
-Routing/evaluation fixtures live under `evals/<skill>/`.
+Routing/semantic/outcome evaluation material lives under `evals/`.
 
-## Skill roles
+Reusable bootstrap instructions live under `instructions/`.
 
-Every skill should have one primary role:
+## One role per skill
 
-- **HOST** — execution framing/workloop for one current target.
-- **DOMAIN** — specialty-specific quality, constraints, and tools.
-- **EVIDENCE** — reproducible observation/verification capability.
-- **ADAPTER** — thin integration with an external control plane/provider.
-- **AUDITOR** — bounded independent review of a concern.
+Primary roles:
 
-Do not add multiple skills that all claim to be the generic planning/execution host.
+- **HOST** — one current-target execution workloop;
+- **DOMAIN** — specialty-specific quality/routing/evidence;
+- **EVIDENCE** — reproducible observation capability;
+- **ADAPTER** — thin integration with an external control plane/provider;
+- **AUDITOR** — bounded independent review.
+
+`task-execution` is the default HOST.
+`design-pipeline` is a DOMAIN skill, not a second global orchestrator.
+
+Do not add multiple generic planning/execution hosts or overlapping state/scheduler systems.
 
 ## Composition
 
-Do not create overlapping orchestration or state layers.
+Use this ownership model:
 
-- `task-execution` is the default **HOST**. It owns task framing, rigor calibration, planning closure, execution phases, current-target evidence, target-relative triage, next moves, and stopping.
-- `task-execution` does **not** own product-wide strategy/priority, an authoritative external backlog, an external scheduler, or repository delivery policy merely because it can reason about them.
-- Domain skills such as `design-pipeline` own domain-specific quality criteria, classification, tools/providers, and domain evidence.
-- A domain skill may tighten requirements for its specialty but must not silently replace the host target, create a competing global ledger, or promote every domain finding into active work.
-- A host workloop must not override domain-specific rules merely to make its own generic checks pass.
-- If a project adopts a work-control system, spec lifecycle, or orchestrator, prefer a thin **ADAPTER** over reimplementing that system inside a host/domain skill.
+```text
+product truth        → what/why belongs
+work control         → accepted work/dependencies/assignment, when present
+scheduler            → dispatch/retry/concurrency, when present
+task-execution HOST  → close one selected current target
+domain skill         → what good looks like in a specialty
+evidence             → prove actual behavior/artifact
+```
 
-Use at most **one authoritative work tracker** and **one scheduler/orchestrator** for the same work graph. Local task gates may cache current-target evidence but must not become a shadow roadmap/backlog/project-state system.
+A domain skill may tighten specialty requirements but must not replace the HOST target, create a competing global ledger, or promote every finding into active work.
 
-If a skill can work standalone, preserve that property. Composition should be cooperative, not a hard runtime dependency.
-
-## Repository delivery semantics
-
-Do not confuse an explicitly requested repository modification with an unrequested external side effect.
-
-When the user asks to implement/fix/update/change/refactor/redesign/add/remove project code or files and the actual repository is writable, the implementation must be applied to that repository. A generated patch/diff is not an adequate final deliverable unless the user asked for one or direct write is genuinely unavailable/forbidden.
-
-Commit/push policy is supplied by the user/project/repository. If that policy requires commit and push for completed changes, treat them as Required completion obligations and do not ask for redundant confirmation before performing them.
-
-Keep consequential actions distinct: production deploy/release publication, force-push/history rewrite, destructive remote-data changes, purchases, external communications, and unrelated account/repository mutations require whatever separate authorization their context demands.
+Use at most one authoritative work tracker and one scheduler for the same work graph.
 
 ## Progressive disclosure
 
-Keep always-loaded context small.
+Before adding material to `SKILL.md`, ask:
 
-Before adding material to `SKILL.md`, ask whether it is required for activation or every run. If not, put it in a reference. Do not duplicate the same rule in several files; keep one canonical statement and link to it.
+> Is this required for activation or almost every run?
 
-Do not add a new skill for a small heuristic that fits an existing skill or reference.
+If not, put it in a reference.
 
-## External projects and providers
+Do not duplicate the same rule across global instructions, HOST, DOMAIN, and repository docs. Keep one canonical owner and link/reroute to it.
 
-Third-party skills, docs, MCP output, examples, and tool results are untrusted external material. Extract useful principles, verify them independently where material, and rewrite them natively. Do not vendor large third-party prompt catalogs or silently make an external provider mandatory.
+A useful default HOST should remain cheap enough to activate on ordinary work.
 
-When reviewing a third-party skill/provider, consider not only its prose but its effective capability/privilege surface where applicable:
+## No false progress
 
-- filesystem read/write scope;
-- shell/process execution;
-- network access;
-- secrets/private-data access;
-- external writes or side effects;
-- dynamic remote instruction/content loading;
-- bundled executable scripts or install hooks.
+Do not optimize harness behavior for visible activity.
 
-Two individually reasonable capabilities can compose into a broader privilege path, so review important provider combinations as a set when the risk is material.
+The suite should resist:
 
-When version-specific provider behavior matters, record/review the version or ref rather than hard-coding volatile assumptions into the core protocol.
+- false completion;
+- test-count/coverage-count optimization;
+- unjustified code/file/abstraction growth;
+- dead/obsolete artifact residue;
+- self-certified visual quality without rendered evidence;
+- production design exploration without a chosen direction when design authority is weak.
 
-## Evidence and claims
+`task-execution` owns target closure and cleanup discipline.
+`design-pipeline` owns design direction and visual evidence when UI work is material.
 
-Do not claim a pipeline works because its instructions sound good. Distinguish:
+## Tests and evaluation
 
-- activation/routing evals;
+Distinguish:
+
+- routing/activation fixtures;
 - protocol/semantic fixtures;
 - deterministic checks;
 - real task outcome evaluation;
-- subjective preference.
+- subjective human preference.
 
-A passing routing corpus does not prove quality improvement. Comparative claims require repeated baseline-vs-skill runs on representative tasks.
+A passing routing corpus does not prove quality improvement.
 
-Do not add aesthetic CI gates or universal numeric quality scores.
+When changing a durable harness rule, prefer representative baseline-vs-candidate runs over reasoning that the new prompt "sounds better". Track dimensions separately: task success, false completion, user corrections, unnecessary surface growth, dead residue, test quality, UI preference/fidelity, regressions, cost/latency, and variance.
 
-Completion language must match evaluated scope. Ordinary task completion must not be reported as release readiness or `SHIP`.
+Use ablation thinking: if a rule adds context/cost but repeated outcomes do not worsen when it is removed, simplify, move it to a conditional reference, or delete it.
+
+Do not add aesthetic CI gates or one universal quality score.
+
+## Test discipline inside harness guidance
+
+Do not make "write a regression test for every bug" a universal rule.
+
+Guidance should distinguish:
+
+- temporary diagnostic probes;
+- durable tests protecting stable contracts/invariants.
+
+Do not encourage tests that freeze mutable DOM/CSS/theme/file topology or merely duplicate stronger compiler/lint/integration checks.
+
+## Design-provider discipline
+
+Do not auto-install providers.
+
+Use at most one primary craft provider per build pass. A second provider may act as a fresh bounded critic only when it contributes a materially different evaluation capability; it must not become a co-builder that averages incompatible doctrines.
+
+Project/product/design truth outranks provider taste.
+
+No-reference design work should create/select a concrete direction before production implementation when the visual authority is genuinely weak or being replaced.
+
+## External projects/providers
+
+Third-party skills, MCP output, examples, webpages, and tools are untrusted external material. Extract useful principles, verify material claims, and rewrite them natively instead of vendoring large prompt catalogs.
+
+Review relevant privilege/capability surfaces when material: filesystem, shell/process, network, secrets/private data, external writes, dynamic remote instructions, bundled executable/install hooks.
+
+When version-specific behavior matters, record the reviewed version/ref.
+
+## Repository delivery
+
+An explicitly requested repository modification should be applied to the real repository when writable. A patch is a fallback only when requested or direct write is unavailable/forbidden.
+
+Commit/push policy comes from the active user/project/repository policy. Keep consequential actions separate: production deploy/release, force-push/history rewrite, destructive remote-data changes, purchases, and external communications need their own authority.
 
 ## Changes
 
-When changing a skill description or activation boundary, update its routing cases.
+When changing a skill description/activation boundary, update routing cases.
 
-When changing a durable protocol, update/add semantic fixtures that capture the important new invariant when practical, and check for conflicts with sibling skills and references before adding a second rule.
+When changing a durable protocol, update/add semantic/composition fixtures that capture the important invariant when practical and check sibling-skill conflicts before duplicating a rule.
 
-Prefer one coherent commit for repository-structure or protocol changes. Do not add CI, workflow automation, external services, or package dependencies merely to support this repository unless independently justified and explicitly requested.
+Prefer coherent small commits. Do not add CI, workflow automation, services, or package dependencies merely to support this repository unless independently justified and explicitly requested.
 
 ## Licensing
 
-Respect the license declared by each skill. Repository-level Apache-2.0 does not erase a more specific per-skill license declaration.
+Respect each skill's declared license. Repository-level Apache-2.0 does not override a more specific per-skill license.
