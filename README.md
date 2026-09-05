@@ -81,6 +81,10 @@ Ready-to-copy bootstrap files:
 
 They intentionally route into HOST/DOMAIN skills instead of duplicating the full protocols.
 
+Use the Codex file for repository-oriented work and the ChatGPT file for broader project work, including research and file deliverables. Replace the previous bootstrap rather than appending both versions. Keep each project's stack, identity, business rules, and branch policy in its own canonical instructions. Missing skills do not imply they were executed or should be automatically installed.
+
+These templates include the repository owner's standing preference to commit and push requested source changes after verification. Adapt that delivery paragraph if adopting them with a different preference. Explicit local-only/patch-only requests and enforced approval boundaries still apply.
+
 ## Executable evaluation
 
 Static fixture/version checks:

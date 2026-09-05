@@ -93,6 +93,8 @@ Prefer coherent small commits. Do not add CI/services/package dependencies just 
 
 When the user requests a repository modification and write access exists, change the real repository and follow active commit/push policy. A normal code change does not authorize production deploy/release, force-push/history rewrite, destructive remote-data changes, purchases, or external communications.
 
+The owner's standing delivery preference is to commit and push verified requested changes without asking again, unless the current request says otherwise. Use the established target branch, preserve unrelated work, and confirm remote delivery. Enforced approval and access-control boundaries still apply.
+
 ## Licensing
 
 Respect each skill's declared license. Repository-level Apache-2.0 does not override a more specific skill license.
