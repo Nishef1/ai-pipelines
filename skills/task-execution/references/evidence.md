@@ -2,17 +2,17 @@
 
 ## Evidence hierarchy
 
-Prefer evidence closer to reality:
+Choose evidence by the claim, not a universal ranking:
 
-1. actual runtime behavior / executable result;
-2. reproducible integration/state test;
-3. deterministic static/structural analysis;
-4. rendered state tied to viewport/data/state;
-5. source inspection;
-6. heuristic reasoning;
-7. aesthetic/preference opinion.
+| Claim | Relevant evidence |
+| --- | --- |
+| Workflow or persistence works | Exercise the flow and inspect its resulting authoritative state |
+| Implementation builds or satisfies types | Existing build/type checks |
+| Layout matches the chosen direction | Inspect comparable actual and reference renders at relevant states/viewports |
+| Users understand the flow | User observation; label expert assessment as heuristic when that is all that exists |
+| Aesthetic preference improved | Contextual pairwise visual judgment; identify who judged it |
 
-Use the evidence modality appropriate to the claim. Critical claims benefit from orthogonal modalities when practical.
+Source inspection and reasoning can guide these checks but cannot replace a missing observation. Critical claims benefit from orthogonal modalities when practical.
 
 Do not let the completion label exceed the evidence scope. Task-level evidence does not become feature, milestone, or release evidence by association.
 

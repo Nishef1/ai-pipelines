@@ -2,7 +2,7 @@
 
 Composable Agent Skills for getting useful work done without turning every task into a giant framework.
 
-Current patch: **2.0.1** (`VERSION` is the release source of truth for shipped core skills).
+Current patch: **2.0.2** (`VERSION` is the release source of truth for shipped core skills).
 
 | Skill | Role | Use it for |
 | --- | --- | --- |
@@ -28,6 +28,8 @@ The goal is **minimum justified permanent surface + evidence strong enough to su
 
 Harness v2 is designed to resist false completion, test-count optimization, unnecessary files/abstractions, dead residue, self-certified UI, production-code design exploration without a direction, provider stacking, and endless audit loops.
 
+Patch 2.0.2 closes ambiguous completion and design gates: preserve the whole request when selecting a target, report blocked required work as incomplete, visually inspect available direction artifacts, and honor expressive operational briefs. It also corrects design authority ordering and hardens outcome reporting against example data and invalid metrics. These are harness changes, not a measured claim that any particular model now designs better.
+
 ## Test and cleanup discipline
 
 `task-execution` distinguishes:
@@ -47,7 +49,7 @@ When material UI work has no strong reference and design authority is weak/incom
 product truth
 → focused reference research when useful
 → 2–4 materially different Design DNAs
-→ concrete scratch/mockup renders when practical
+→ inspect concrete scratch/mockup renders when visual tools are available
 → compare product fit / UX / craft / originality / implementation fit
 → select one direction
 → production build

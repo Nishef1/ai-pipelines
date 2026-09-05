@@ -188,6 +188,8 @@ Stop when:
 - cost/iteration budget is reached;
 - the direction is fundamentally wrong and should be re-selected instead of patched.
 
+Ending a review loop is not proof of completion. If budget, capability limits, or an unsuccessful direction leaves material requirements open, return those gaps to the HOST as partial/blocked. Keep the stronger prior version when a later pass regresses it.
+
 Do not use a hard-coded round count or a target score such as 10/10.
 
 ## 8. Severity
@@ -199,7 +201,7 @@ Use severity for actionability, not drama.
 - **Moderate** — clear quality issue with limited task impact.
 - **Preference** — legitimate subjective alternative; requires choice, not auto-fix.
 
-Aesthetic disagreement alone is not a blocker.
+Aesthetic disagreement alone is not a blocker. But visibly missing an explicit visual requirement (such as the approved media-led composition or a requested expressive direction) is a fidelity gap, not something to dismiss as taste. A functional page alone does not close a redesign request.
 
 ## 9. Evaluating Design Pipeline itself
 

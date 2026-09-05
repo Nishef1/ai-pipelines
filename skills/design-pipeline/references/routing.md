@@ -190,7 +190,7 @@ Do not force structural novelty merely to be different from a previous build. Va
 
 ## 9. Human gates
 
-Require or strongly prefer a human choice when:
+Seek a human choice only when existing user authorization and project truth do not resolve a material choice, for example:
 
 - the project identity is being replaced;
 - multiple directions have legitimate subjective tradeoffs;

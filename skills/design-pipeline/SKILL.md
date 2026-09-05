@@ -3,7 +3,7 @@ name: design-pipeline
 description: "DOMAIN skill for material web UI/UX design, redesign, review, and visual verification. Use for meaningful visual direction, UX structure, new surfaces, consequential product UI, reference-driven work, or final rendered quality review. Ground in project truth, create/select a concrete direction before production code when references/design authority are weak, use at most one primary craft approach per build pass, verify the real rendered result, and keep functional/UX/brand/aesthetic verdicts separate. Not for backend-only work or trivial local style repairs."
 license: Apache-2.0
 metadata:
-  version: 2.0.1
+  version: 2.0.2
 ---
 
 # Design Pipeline
@@ -24,8 +24,8 @@ This skill owns design classification, visual direction, craft routing, rendered
 
 Resolve in this order:
 
-1. canonical product/policy/legal/security/architecture truth;
-2. explicit current user intent;
+1. system/safety/tool constraints and explicit current user intent;
+2. applicable repository instructions and canonical product/policy/legal/security/architecture truth;
 3. accepted project design memory such as `DESIGN.md`;
 4. actual implementation, tokens/components/assets, and current rendered behavior;
 5. approved surface-specific direction/reference;
@@ -79,14 +79,14 @@ Before production implementation:
 
 1. research only enough current references to expand the option space;
 2. derive 2–4 materially different **Design DNAs**;
-3. concretize promising directions as mockups/scratch renders/prototypes outside the permanent production path when practical;
+3. make the promising directions visible outside production and inspect them when rendering/image tools are available; prose-only variants are not visual exploration;
 4. compare product fit, UX, originality/specificity, craft, accessibility/localization/responsive viability, and implementation fit;
 5. select one coherent direction;
 6. persist only durable accepted design memory.
 
 Three cosmetic variants of the same layout are one direction, not three. If visual generation is available, visible alternatives are preferable to asking a non-designer user to imagine textual options.
 
-Read `references/direction.md` for no-reference/new-world work.
+Read `references/direction.md` before no-reference/new-world direction work. If visual access is unavailable, state the limitation and treat the direction as provisional; do not claim visual comparison occurred.
 
 ## 4. Route the minimum useful craft capability
 
@@ -118,7 +118,7 @@ Use the project's real stack and state model.
 Make audience, outcome, proof, and primary action legible. Do not fabricate metrics, testimonials, badges, guarantees, or social proof.
 
 ### Operate
-Optimize task completion, state truth, hierarchy, scanability, predictable affordances, error prevention/recovery, and appropriate density.
+Optimize task completion, state truth, hierarchy, scanability, predictable affordances, error prevention/recovery, and appropriate density. Operate does not prescribe a bland or minimal style: honor an expressive brief through composition, typography, color and real product media while keeping actions familiar.
 
 ### Motion
 Optional. Use for feedback, continuity, state, explanation, or justified delight. High-frequency/consequential actions generally need less motion. Reduced-motion must preserve comprehension.
@@ -149,7 +149,7 @@ Build/lint/type/test success does not prove visual quality.
 
 ## 7. FRESH JUDGE
 
-For material redesign/review, use a fresh bounded review context when practical and useful. It must inspect rendered evidence rather than trust builder narration.
+For material redesign/review, inspect the before/reference and final render at comparable states and viewports. Use a fresh bounded review context when available, authorized, and useful; provide the brief and raw evidence without the builder's praise or desired verdict. Otherwise perform a separate evidence review and label it self-review, not independent validation.
 
 Keep verdicts separate:
 

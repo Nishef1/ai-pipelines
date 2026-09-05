@@ -3,7 +3,7 @@ name: task-execution
 description: "Default HOST for actionable work. Use for implementation, fixes, reviews, audits, investigations, plans, refactors, redesigns, and verification. Bind work to the narrowest justified target, plan only until material unknowns are bounded, make the smallest coherent change, judge with evidence capable of falsifying the claim, clean temporary/obsolete artifacts, classify remaining findings against the current target, and stop when Required work is closed. Domain skills define specialty quality."
 license: MIT
 metadata:
-  version: 2.0.1
+  version: 2.0.2
 ---
 
 # Task Execution
@@ -43,7 +43,7 @@ Cleanup obligation:
 Out of scope:
 ```
 
-Use the narrowest justified level. Local completion never implies a higher level.
+Use the narrowest level that covers the **whole explicit request**, not the easiest subset. For multi-part work, map each requested outcome to an obligation before building; use the existing plan or task notes, not a new tracking system. A completed slice is progress: continue through the remaining authorized obligations. Local completion never implies a higher level.
 
 `STOP` = no Required work remains for the current target.  
 `SHIP` = only an explicitly evaluated RELEASE target that is actually release-ready.
@@ -107,7 +107,7 @@ When repository mutation was requested and write access exists, modify the real 
 
 ## 7. Tests and probes are evidence, not output volume
 
-Before adding a test, check whether an existing verifier already proves the claim.
+Before adding a test, identify the missing evidence and check whether an existing verifier exercises that scenario. A reversible low-impact edit usually needs an existing check or direct inspection, not a new permanent test. Read `references/cleanup-and-tests.md` before adding durable test machinery or replacing a tested path.
 
 Classify new checks as:
 
@@ -120,7 +120,7 @@ Do not preserve tests merely to freeze mutable DOM/CSS/theme/token values, class
 
 Prefer behavior/integration evidence over mock-heavy duplication when the boundary matters. For bugs, use the same reproduction before/after when practical.
 
-Read `references/cleanup-and-tests.md` for test-heavy/replacement work.
+Do not weaken a test or expected result merely to turn a failure green; resolve whether implementation or the accepted contract is wrong. After sufficient checks pass, broaden verification only for a concrete unresolved risk or required gate.
 
 ## 8. JUDGE the claim, not the command
 
@@ -204,8 +204,10 @@ Required obligations = 0
 AND required evidence is current
 AND cleanup obligation is satisfied
 AND material changed hunks are accounted for
-AND repository delivery obligations are satisfied or a real blocker is reported
+AND repository delivery obligations are satisfied
 ```
+
+Before claiming completion, reconcile the original request against actual changes, evidence, and delivery state. A required failed, unknown, stale, or blocked obligation means **PARTIAL / BLOCKED**, even if the code is written. Report the concrete gap; a blocker explains an incomplete handoff, it does not satisfy the obligation. Do not call an unpushed change delivered remotely. Continue recoverable authorized work instead of asking whether to finish it.
 
 Then STOP. Do not launch another broad audit because further improvement is theoretically possible.
 

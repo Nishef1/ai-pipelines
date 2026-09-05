@@ -51,3 +51,5 @@ Never report an unrun check as passed. Treat evidence invalidated by later relev
 Do not broaden scope indefinitely. Stop when the current target's Required obligations, current evidence, task-caused cleanup, and repository-delivery obligations are satisfied.
 
 Do not expose private chain-of-thought.
+
+For multi-part requests, track every requested outcome and continue after completing a slice. Before the final report, reconcile the request, current evidence, and actual delivery. Required work that is blocked or unverified means partial/blocked, not complete.

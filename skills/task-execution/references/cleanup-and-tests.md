@@ -66,7 +66,11 @@ Before adding a new test:
 1. inspect project verification commands and existing tests;
 2. identify the exact claim to prove;
 3. reuse the strongest existing verifier when it already exercises that claim;
-4. add only the missing layer.
+4. add only the missing layer, preferably by extending an existing behavioral case.
+
+A suite passing is useful only if it reaches the relevant scenario. Conversely, a one-off text, spacing, or configuration edit does not require a new test file when direct inspection and existing checks establish its outcome.
+
+Before retaining a new test, check both directions: the protected fault should fail, while a legitimate behavior-preserving refactor should still pass. Use a small temporary fault injection when it materially clarifies this; do not build a mutation-testing framework. Keep valuable existing regression coverage unless its contract is obsolete or a stronger replacement demonstrably covers it. Test reduction is not a target either.
 
 For boundary-heavy behavior, prefer an integration/behavioral check over many mock-heavy tests when practical.
 

@@ -29,5 +29,6 @@
       "ui_preference": "candidate",
       "notes": "Example shape only; replace with real run evidence."
     }
-  ]
+  ],
+  "example_only": true
 }

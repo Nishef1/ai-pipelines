@@ -65,3 +65,5 @@ For bugs, use the same reproduction before/after when practical. Treat later-inv
 Before completion, satisfy Required obligations, current evidence, task-caused cleanup, and repository delivery policy. Then stop; do not keep auditing merely because more improvement is possible.
 
 Keep final reports concise and evidence-based. Do not expose private chain-of-thought.
+
+For multi-part requests, track every requested outcome and continue after completing a slice. Before the final report, reconcile the request, current evidence, and actual delivery. Required work that is blocked or unverified means partial/blocked, not complete.

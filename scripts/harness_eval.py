@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import statistics
 import sys
@@ -145,15 +146,22 @@ def validate_outcome_record(record: Any, index: int) -> list[str]:
             errors.append(f"{where}: {key} must be {typ.__name__}")
     if isinstance(record.get("variant"), str) and record["variant"] not in {"baseline", "candidate"}:
         errors.append(f"{where}: variant must be baseline or candidate")
+    if isinstance(record.get("task_id"), str) and not record["task_id"].strip():
+        errors.append(f"{where}: task_id must be non-empty")
     for key in ("user_corrections", "unnecessary_files", "unnecessary_tests", "residue_items"):
         if isinstance(record.get(key), int) and record[key] < 0:
             errors.append(f"{where}: {key} cannot be negative")
     for key in ("latency_seconds", "cost"):
         value = record.get(key)
-        if value is not None and (not isinstance(value, (int, float)) or isinstance(value, bool) or value < 0):
-            errors.append(f"{where}: {key} must be a non-negative number when present")
+        if value is not None and (
+            not isinstance(value, (int, float))
+            or isinstance(value, bool)
+            or value < 0
+            or (isinstance(value, float) and not math.isfinite(value))
+        ):
+            errors.append(f"{where}: {key} must be a finite non-negative number when present")
     pref = record.get("ui_preference")
-    if pref is not None and pref not in {"baseline", "candidate", "tie", "not_applicable"}:
+    if pref is not None and (not isinstance(pref, str) or pref not in {"baseline", "candidate", "tie", "not_applicable"}):
         errors.append(f"{where}: invalid ui_preference {pref!r}")
     return errors
 
@@ -165,6 +173,8 @@ def mean(rows: list[dict[str, Any]], key: str) -> float | None:
 
 def outcome_summary(path: Path) -> int:
     data = load_json(path)
+    if isinstance(data, dict) and data.get("example_only"):
+        raise EvalError("example-only input is not real outcome evidence; supply observed runs")
     records = data.get("runs") if isinstance(data, dict) else data
     if not isinstance(records, list) or not records:
         raise EvalError("outcome input must be a non-empty array or {\"runs\": [...]} object")
@@ -181,7 +191,7 @@ def outcome_summary(path: Path) -> int:
         by_variant[record["variant"]].append(record)
         by_task[record["task_id"]][record["variant"]].append(record)
 
-    print("Harness outcome summary")
+    print("Harness outcome summary — descriptive only; input evidence is not independently verified")
     print("======================")
     for variant in ("baseline", "candidate"):
         rows = by_variant.get(variant, [])
@@ -205,10 +215,13 @@ def outcome_summary(path: Path) -> int:
 
     paired = [task_id for task_id, variants in by_task.items() if variants.get("baseline") and variants.get("candidate")]
     print(f"paired tasks: {len(paired)}/{len(by_task)}")
+    repeated = sum(all(len(by_task[task_id][v]) >= 2 for v in ("baseline", "candidate")) for task_id in paired)
+    print(f"paired tasks with repeated runs in both variants: {repeated}/{len(paired)}")
+    print("Pooled means may reflect different task mixes or run counts; they do not establish improvement.")
     if not paired:
         return 0
 
-    candidate_wins = baseline_wins = ties = 0
+    candidate_wins = baseline_wins = ties = mixed = 0
     for task_id in paired:
         prefs = {
             r.get("ui_preference")
@@ -217,14 +230,15 @@ def outcome_summary(path: Path) -> int:
             if r.get("ui_preference") in {"baseline", "candidate", "tie"}
         }
         if len(prefs) > 1:
-            raise EvalError(f"{task_id}: conflicting ui_preference values across paired runs")
+            mixed += 1
+            continue
         if prefs:
             pref = next(iter(prefs))
             candidate_wins += pref == "candidate"
             baseline_wins += pref == "baseline"
             ties += pref == "tie"
-    if candidate_wins or baseline_wins or ties:
-        print(f"UI preference paired tasks: candidate={candidate_wins} baseline={baseline_wins} tie={ties}")
+    if candidate_wins or baseline_wins or ties or mixed:
+        print(f"UI preference by paired task (not votes): candidate={candidate_wins} baseline={baseline_wins} tie={ties} mixed={mixed}")
 
     print("Interpret dimensions separately; do not collapse these numbers into one universal quality score.")
     return 0
@@ -297,6 +311,7 @@ def static_check() -> int:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
     fixture_count = len(list(EVALS.glob("**/*-cases.json")))
+    print("Structural validation only: no model behavior or outcome quality was evaluated.")
     print(f"OK: version={VERSION_FILE.read_text(encoding='utf-8').strip()} fixtures={fixture_count}")
     return 0
 
